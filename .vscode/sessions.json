@@ -1,0 +1,93 @@
+{
+  "$schema": "https://cdn.statically.io/gh/nguyenngoclongdev/cdn/main/schema/v11/terminal-keeper.json",
+  "theme": "tribe",
+  "active": "default",
+  "activateOnStartup": true,
+  "keepExistingTerminals": false,
+  "sessions": {
+    "default": [
+      {
+        "name": "git",
+        "icon": "logo-github",
+        "color": "terminal.ansiWhite",
+        "autoExecuteCommands": true,
+        "commands": [
+          "clear"
+        ]
+      },
+      {
+        "name": "empty backend",
+        "icon": "primitive-dot",
+        "color": "terminal.ansiBlue",
+        "autoExecuteCommands": true,
+        "commands": [
+          "cd backend",
+          "source venv/bin/activate",
+          "clear"
+        ]
+      },
+      {
+        "name": "shell",
+        "icon": "output",
+        "color": "terminal.ansiYellow",
+        "autoExecuteCommands": true,
+        "commands": [
+          "cd backend",
+          "source venv/bin/activate",
+          "clear"
+        ]
+      },
+      {
+        "name": "tests",
+        "icon": "checklist",
+        "color": "terminal.ansiCyan",
+        "autoExecuteCommands": true,
+        "commands": [
+          "cd backend",
+          "source venv/bin/activate",
+          "clear"
+        ]
+      },
+      [
+        {
+          "name": "docker",
+          "icon": "symbol-function",
+          "color": "terminal.ansiBlue",
+          "autoExecuteCommands": true,
+          "commands": [
+            "clear"
+          ]
+        },
+        {
+          "name": "docker",
+          "icon": "symbol-function",
+          "color": "terminal.ansiBlue",
+          "autoExecuteCommands": true,
+          "commands": [
+            "clear"
+          ]
+        }
+      ],
+      {
+        "name": "frontend",
+        "autoExecuteCommands": true,
+        "icon": "person",
+        "color": "terminal.ansiGreen",
+        "commands": [
+          "cd frontend",
+          "clear"
+        ]
+      },
+      {
+        "name": "empty frontend",
+        "autoExecuteCommands": true,
+        "icon": "person",
+        "color": "terminal.ansiGreen",
+        "commands": [
+          "cd frontend",
+          "clear"
+        ]
+      }
+    ]
+  }
+}
