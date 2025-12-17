@@ -42,6 +42,7 @@ INSTALLED_APPS = (
         "rest_framework",
         "rest_framework_simplejwt",
         "corsheaders",
+        "drf_spectacular",
     ]
 )
 MIDDLEWARE = [
@@ -126,7 +127,7 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
 
 
@@ -136,3 +137,4 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 from config.settings.rest_framework import *
 from config.settings.simple_jwt import *
+from config.settings.drf_spectacular import *
