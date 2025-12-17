@@ -36,6 +36,7 @@ INSTALLED_APPS = (
         "django.contrib.staticfiles",
     ]
     + [  # My apps
+        "user.apps.UserConfig",
     ]
     + [  # Third-party packages
         "rest_framework",
@@ -125,8 +126,13 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = "/media/"
+
+
 # Only for development testing - never use in production
 CORS_ALLOW_ALL_ORIGINS = True
+
 
 from config.settings.rest_framework import *
 from config.settings.simple_jwt import *
