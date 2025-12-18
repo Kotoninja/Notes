@@ -1,7 +1,8 @@
 openapi: 3.0.3
 info:
-  title: ''
-  version: 0.0.0
+  title: Notes API
+  version: 0.0.1
+  description: Api
 paths:
   /api/token/:
     post:
@@ -87,6 +88,7 @@ paths:
   /api/users/:
     get:
       operationId: users_list
+      description: Return a list of all usernames in the system.
       tags:
       - users
       security:

@@ -135,6 +135,14 @@ MEDIA_URL = "/media/"
 CORS_ALLOW_ALL_ORIGINS = True
 
 
+# SPECTACULAR_SETTINGS = {
+#     'TITLE': 'Notes API',
+#     'DESCRIPTION': '',
+#     'VERSION': '0.0.1',
+#     'SERVE_INCLUDE_SCHEMA': False,
+#     # OTHER SETTINGS
+# }
+
 from config.settings.rest_framework import *
 from config.settings.simple_jwt import *
 from config.settings.drf_spectacular import *

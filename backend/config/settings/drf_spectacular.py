@@ -1,6 +1,6 @@
 from typing import Dict, Any
 
-SPECTACULAR_DEFAULTS: Dict[str, Any] = {
+SPECTACULAR_SETTINGS: Dict[str, Any] = {
     # A regex specifying the common denominator for all operation paths. If
     # SCHEMA_PATH_PREFIX is set to None, drf-spectacular will attempt to estimate
     # a common prefix. Use '' to disable.
@@ -194,3 +194,5 @@ SPECTACULAR_DEFAULTS: Dict[str, Any] = {
     "OAUTH2_REFRESH_URL": None,
     "OAUTH2_SCOPES": None,
 }
+
+
