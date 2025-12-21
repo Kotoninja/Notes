@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Notes API
-  version: 0.0.1
+  version: 0.0.2
   description: Api
 paths:
   /api/token/:
@@ -85,12 +85,58 @@ paths:
               schema:
                 $ref: '#/components/schemas/TokenVerify'
           description: ''
-  /api/users/:
+  /api/user/context/:
     get:
-      operationId: users_list
+      operationId: user_context_list
+      description: Information about the authorized user
+      tags:
+      - user
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+          description: ''
+  /api/user/registration/:
+    post:
+      operationId: user_registration_create
+      description: Register a user
+      tags:
+      - user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/User'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+  /api/user/users/:
+    get:
+      operationId: user_users_list
       description: Return a list of all usernames in the system.
       tags:
-      - users
+      - user
       security:
       - jwtAuth: []
       responses:
