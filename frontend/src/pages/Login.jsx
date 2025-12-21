@@ -33,7 +33,7 @@ function Login() {
                         localStorage.setItem(ACCESS_TOKEN, response.data.access);
                         localStorage.setItem(REFRESH_TOKEN, response.data.refresh);
                         // context?.fetchUser(); NOTE Uncommit this line, when user context was configured
-                        navigate("/")
+                        navigate("/home")
                     })
             } catch (error) {
                 setFormError(true)
