@@ -2,11 +2,8 @@ from rest_framework import generics, viewsets
 from django.contrib.auth.models import User
 from .serializers import UserSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from drf_spectacular.utils import extend_schema
+from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
-from django.views.decorators.csrf import csrf_exempt
-from django.utils.decorators import method_decorator
 from rest_framework import status
 
 
@@ -21,8 +18,13 @@ class UserAPIList(generics.ListAPIView):
     ]
 
 
+@extend_schema_view(
+    list=extend_schema(description="Information about the authorized user"),
+    create=extend_schema(description="Register a user"),
+)
 class UserApi(viewsets.ModelViewSet):
     serializer_class = UserSerializer
+    permission_classes = [AllowAny]
 
     def list(self, request):
         if request.user.is_authenticated:
