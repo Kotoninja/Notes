@@ -68,7 +68,7 @@ function Registration() {
                         <TextField
                             type="email"
                             name="email"
-                            id="input-password"
+                            id="input-email"
                             label="Email"
                             className="form-input"
                             aria-describedby="my-helper-text"
