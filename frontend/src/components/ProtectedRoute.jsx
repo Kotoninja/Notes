@@ -8,8 +8,6 @@ import React from "react";
 function ProtectedRoute({ children }) {
     const [isAuthorized, setIsAuthorized] = useState(null);
 
-    console.log(children)
-
     const refreshToken = async () => {
         const refreshToken = localStorage.getItem(REFRESH_TOKEN);
         try {
@@ -53,6 +51,6 @@ function ProtectedRoute({ children }) {
         return <div></div>;
     }
 
-    return React.cloneElement(children,{props:isAuthorized})
+    return React.cloneElement(children, { props: isAuthorized })
 }
 export default ProtectedRoute;

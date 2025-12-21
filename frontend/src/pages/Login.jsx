@@ -21,7 +21,7 @@ function Login() {
     const navigate = useNavigate();
 
 
-    async function handelFrom(e) {
+    async function handleFrom(e) {
         e.preventDefault()
 
 
@@ -51,7 +51,7 @@ function Login() {
 
     return (
         <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh", flexDirection: "column" }}>
-            <form onSubmit={handelFrom} className="form-container">
+            <form onSubmit={handleFrom} className="form-container">
                 <Box sx={{ display: "flex", justifyContent: "center", }}>
                     <h1>Sign in</h1>
                 </Box>

@@ -9,7 +9,6 @@ import { useState } from 'react';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import api from "../api";
-import { ACCESS_TOKEN, REFRESH_TOKEN } from '../constants';
 import { useNavigate } from "react-router-dom";
 import Typography from '@mui/material/Typography';
 
@@ -23,13 +22,13 @@ function Registration() {
     const navigate = useNavigate();
 
 
-    async function handelFrom(e) {
+    async function handleFrom(e) {
         e.preventDefault();
 
         if (password && username) {
             setLoading(true);
             try {
-                await api.post("api/token/", { username, password })
+                await api.post("api/user/registration/", { username, password, email })
                     .then(function (response) {
                         navigate("/");
                     });
@@ -49,7 +48,7 @@ function Registration() {
 
     return (
         <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh", flexDirection: "column" }}>
-            <form onSubmit={handelFrom} className="form-container">
+            <form onSubmit={handleFrom} className="form-container">
                 <Box sx={{ display: "flex", justifyContent: "center", }}>
                     <h1>Sign up</h1>
                 </Box>
