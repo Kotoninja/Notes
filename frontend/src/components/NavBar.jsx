@@ -26,11 +26,11 @@ const NavBar = () => {
         <AppBar
             position="fixed"
             square={true}
-            sx={{ p: 2, display: "block", boxShadow: 0, backgroundColor: indigo["400"] }}
+            sx={{ p: 2, display: "block", boxShadow: 0, backgroundColor: "transparent" }}
         >
-            <Container>
-                <Toolbar variant="string">
-                    <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', px: 0 }}>
+            <Container  >
+                <Toolbar variant="string" sx={{ backgroundColor: "rgba(26, 35, 126, 0.4)", backdropFilter:"blur(24px)", borderRadius:4}}>
+                    <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', px: 0, }}>
                         <Link href="/">
                             <img src={notes} style={{ width: 100 }} />
                         </Link>
