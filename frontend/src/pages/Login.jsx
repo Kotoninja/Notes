@@ -11,6 +11,8 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import api from "../api";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from '../constants';
 import { useNavigate } from "react-router-dom";
+import UserContext from '../context/UserContext';
+import { useContext } from 'react';
 
 function Login() {
     const [username, setUsername] = useState("")
@@ -19,7 +21,7 @@ function Login() {
     const [loading, setLoading] = useState(false)
     const [formError, setFormError] = useState(false)
     const navigate = useNavigate();
-
+    const context = useContext(UserContext)
 
     async function handleFrom(e) {
         e.preventDefault()
@@ -32,7 +34,7 @@ function Login() {
                     .then(function (response) {
                         localStorage.setItem(ACCESS_TOKEN, response.data.access);
                         localStorage.setItem(REFRESH_TOKEN, response.data.refresh);
-                        // context?.fetchUser(); NOTE Uncommit this line, when user context was configured
+                        context?.fetchUser();
                         navigate("/home")
                     })
             } catch (error) {
@@ -91,7 +93,7 @@ function Login() {
 
                 {formError && <Alert sx={{ my: 2 }} severity="error">Incorrect username or password.</Alert>}
                 <Button loading={loading} sx={{ width: "100%" }} variant="contained" type="submit">Submit</Button>
-                <Box sx={{ my: "10px", display: "flex", justifyContent: "center" }}>Don't have an account? <Link sx={{ml:"4px"}} href="/registration">Sing up</Link></Box>
+                <Box sx={{ my: "10px", display: "flex", justifyContent: "center" }}>Don't have an account? <Link sx={{ ml: "4px" }} href="/registration">Sing up</Link></Box>
             </form>
         </Box>
     )
