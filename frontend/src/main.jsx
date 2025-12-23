@@ -13,7 +13,8 @@ createRoot(document.getElementById('root')).render(
           position: 'fixed',
           width: '100vw',
           height: '100vh',
-        }} snowflakeCount={150} />
+        }} snowflakeCount={150}
+        color='rgba(25, 118, 210, 0.4)'/>
       </div>
     </div>
   </StrictMode>
