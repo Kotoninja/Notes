@@ -5,7 +5,7 @@ import Container from "@mui/material/Container"
 import Box from "@mui/material/Box"
 import Button from "@mui/material/Button"
 import notes from "../assets/notes.svg";
-import { indigo, grey } from "@mui/material/colors";
+import { grey } from "@mui/material/colors";
 import { useState } from "react"
 import Drawer from '@mui/material/Drawer';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -28,7 +28,6 @@ import List from "@mui/material/List"
 import ListItem from "@mui/material/ListItem"
 import LogoutIcon from '@mui/icons-material/Logout';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
-import Skeleton from "@mui/material/Skeleton"
 
 const NavBar = () => {
     const [open, setOpen] = useState(false);
