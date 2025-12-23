@@ -30,7 +30,7 @@ function Registration() {
             try {
                 await api.post("api/user/registration/", { username, password, email })
                     .then(function (response) {
-                        navigate("/");
+                        navigate("/home");
                     });
             } catch (error) {
                 setFormError(true);
