@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     ]
     + [  # My apps
         "user.apps.UserConfig",
+        "notes.apps.NotesConfig",
     ]
     + [  # Third-party packages
         "rest_framework",
