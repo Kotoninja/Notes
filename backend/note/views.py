@@ -29,6 +29,7 @@ from drf_spectacular.utils import OpenApiResponse, OpenApiExample
     ),
     update=extend_schema(
         summary="Update a note.",
+        description="The value of 'user' <b>does not</b> change.",
         responses={
             status.HTTP_200_OK: NoteSerializer,
             status.HTTP_404_NOT_FOUND: OpenApiResponse(
