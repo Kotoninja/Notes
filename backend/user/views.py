@@ -8,7 +8,7 @@ from rest_framework import status
 
 
 @extend_schema(
-    description="Return a list of all usernames in the system.",
+    summary="Return a list of all usernames in the system.",
 )
 class UserAPIList(generics.ListAPIView):
     queryset = User.objects.all()
@@ -19,8 +19,8 @@ class UserAPIList(generics.ListAPIView):
 
 
 @extend_schema_view(
-    list=extend_schema(description="Information about the authorized user"),
-    create=extend_schema(description="Register a user"),
+    list=extend_schema(summary="Information about the authorized user"),
+    create=extend_schema(summary="Register a user"),
 )
 class UserApi(viewsets.ModelViewSet):
     serializer_class = UserSerializer
