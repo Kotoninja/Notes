@@ -7,6 +7,8 @@ from rest_framework import status
 from .models import Note
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from drf_spectacular.utils import OpenApiResponse, OpenApiExample
+from django.core.cache import cache
+from cache.decorators import validate_cache
 
 
 @extend_schema_view(
@@ -54,12 +56,31 @@ class NoteApi(viewsets.ModelViewSet):
     serializer_class = NoteSerializer
 
     def list(self, request):
-        notes = Note.objects.filter(user=request.user)
-        if notes.exists():
-            serializer = self.get_serializer(notes, many=True)
-            return Response(data=serializer.data, status=status.HTTP_200_OK)
-        return Response(data=[], status=status.HTTP_204_NO_CONTENT)
+        cache_key = "user:{id}:notes:all".format(id=request.user.id)
 
+        cache_data = cache.get(cache_key)
+
+        if cache_data:
+            print("Cached")  # NOTE delete this line
+            return Response(data=cache_data["data"], status=cache_data["status"])
+        else:
+            notes = Note.objects.filter(user=request.user)
+            if notes.exists():
+                serializer = self.get_serializer(notes, many=True)
+                cache.set(
+                    cache_key,
+                    {"data": serializer.data, "status": status.HTTP_200_OK},
+                    timeout=600,
+                )
+                return Response(data=serializer.data, status=status.HTTP_200_OK)
+            cache.set(
+                cache_key,
+                {"data": [], "status": status.HTTP_204_NO_CONTENT},
+                timeout=600,
+            )
+            return Response(data=[], status=status.HTTP_204_NO_CONTENT)
+
+    @validate_cache(key="user:{id}:notes:all")
     def create(self, request):
         context: dict = {"user": request.user.pk, **request.data, "completed": False}
         serializer = self.get_serializer(data=context)
@@ -68,6 +89,7 @@ class NoteApi(viewsets.ModelViewSet):
             return Response(data=serializer.data, status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
+    @validate_cache(key="user:{id}:notes:all")
     def update(self, request, pk):
         note = get_object_or_404(Note, pk=pk, user=request.user)
         context: dict = {"user": request.user.pk, **request.data}
@@ -76,6 +98,7 @@ class NoteApi(viewsets.ModelViewSet):
             serializer.save()
             return Response(data=serializer.data, status=status.HTTP_200_OK)
 
+    @validate_cache(key="user:{id}:notes:all")
     def destroy(self, request, pk):
         get_object_or_404(Note, pk=pk, user=request.user).delete()
         return Response(status=status.HTTP_200_OK)
