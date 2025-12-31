@@ -147,3 +147,4 @@ CORS_ALLOW_ALL_ORIGINS = True
 from config.settings.rest_framework import *
 from config.settings.simple_jwt import *
 from config.settings.drf_spectacular import *
+from config.settings.redis import *
