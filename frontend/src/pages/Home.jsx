@@ -15,7 +15,9 @@ function Home(props) {
     async function fetchData() {
         api.get("api/note/all/")
             .then(function (response) {
-                setTasks(response?.data)
+                if (response?.data) {
+                    setTasks(response?.data)
+                }
             })
     }
 
@@ -36,9 +38,17 @@ function Home(props) {
     }
 
     function addTask(name, id) {
-        const newTask = { id: `todo-${id}`, title: name, completed: false }
+        const newTask = { id: id, key: `todo-${id}`, title: name, completed: false }
         setTasks([...tasks, newTask])
     }
+
+    function deleteTask(id) {
+        api.delete(`api/note/delete/${id}/`)
+            .then(
+                setTasks(tasks.filter((task) => task.id != id))
+            )
+    }
+
 
     const taskList = tasks.map((task) =>
     (<Todo id={task.id}
@@ -49,6 +59,7 @@ function Home(props) {
         completed={task.completed}
         key={task.id}
         toggleTaskCompleted={toggleTaskCompleted}
+        deleteTask={deleteTask}
     />))
 
 
