@@ -6,34 +6,28 @@ import Button from '@mui/material/Button';
 import NoteForm from '../components/NoteForm';
 import { useState } from 'react';
 import Todo from '../components/Todo';
+import api from '../api';
+import { useEffect } from 'react';
 
+function Home(props) {
+    const [tasks, setTasks] = useState([])
 
-const context = [
-    {
-        "id": 0,
-        "title": "Hello",
-        "description": "string",
-        "publication_date": "2026-01-03T17:22:21.887Z",
-        "end_date": "2026-01-03T17:22:21.887Z",
-        "completed": true,
-    },
-    {
-        "id": 1,
-        "title": "Hello2",
-        "description": "string",
-        "publication_date": "2026-01-03T17:22:21.887Z",
-        "end_date": "2026-01-03T17:22:21.887Z",
-        "completed": true,
+    async function fetchData() {
+        api.get("api/note/all/")
+            .then(function (response) {
+                setTasks(response?.data)
+            })
     }
-]
 
+    useEffect(() => {
+        fetchData()
+    }, [])
 
-function Home({ props }) {
-    const [tasks, setTasks] = useState(context)
 
     function toggleTaskCompleted(id) {
         const updatedTasks = tasks.map((task) => {
             if (id === task.id) {
+                api.put(`/api/note/update/${id}/`, { title: task.title, completed: !task.completed })
                 return { ...task, completed: !task.completed };
             }
             return task;
@@ -41,8 +35,8 @@ function Home({ props }) {
         setTasks(updatedTasks);
     }
 
-    function addTask(name) {
-        const newTask = { id: "todo-", title: name, completed: false }
+    function addTask(name, id) {
+        const newTask = { id: `todo-${id}`, title: name, completed: false }
         setTasks([...tasks, newTask])
     }
 
@@ -56,6 +50,7 @@ function Home({ props }) {
         key={task.id}
         toggleTaskCompleted={toggleTaskCompleted}
     />))
+
 
     return (
         <Layout>
