@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import Link from "@mui/material/Link";
 import Box from "@mui/material/Box";
 import Layout from '../components/Layout';
@@ -10,58 +10,60 @@ import api from '../api';
 import { useEffect } from 'react';
 
 function Home(props) {
-    const [tasks, setTasks] = useState([])
+    const [tasks, setTasks] = useState([]);
 
     async function fetchData() {
         api.get("api/note/all/")
             .then(function (response) {
                 if (response?.data) {
-                    setTasks(response?.data)
-                }
-            })
-    }
+                    setTasks(response?.data);
+                };
+            });
+    };
 
     useEffect(() => {
-        fetchData()
-    }, [])
+        fetchData();
+    }, []);
 
 
-    function toggleTaskCompleted(id) {
-        const updatedTasks = tasks.map((task) => {
-            if (id === task.id) {
-                api.put(`/api/note/update/${id}/`, { title: task.title, completed: !task.completed }) // FIXME 
-                return { ...task, completed: !task.completed };
-            }
-            return task;
-        });
-        setTasks(updatedTasks);
-    }
+    function toggleTaskCompleted(id, taskTitle, taskCompleted) {
+        api.put(`/api/note/update/${id}/`, { title: taskTitle, completed: !taskCompleted })
+            .then(() => {
+                const updatedTasks = tasks.map((task) => {
+                    if (id === task.id) {
+                        return { ...task, completed: !taskCompleted };
+                    };
+                    return task;
+                });
+                setTasks(updatedTasks);
+            });
+    };
 
     function editTask(id, newName) {
         api.put(`/api/note/update/${id}/`, { title: newName })
             .then(() => {
                 const editedTaskList = tasks.map((task) => {
                     if (id === task.id) {
-                        return { ...task, title: newName }
-                    }
-                    return task
-                })
-                setTasks(editedTaskList)
+                        return { ...task, title: newName };
+                    };
+                    return task;
+                });
+                setTasks(editedTaskList);
             }
-            )
-    }
+            );
+    };
 
     function addTask(name, id) {
-        const newTask = { id: id, key: `todo-${id}`, title: name, completed: false }
-        setTasks([...tasks, newTask])
-    }
+        const newTask = { id: id, key: `todo-${id}`, title: name, completed: false };
+        setTasks([...tasks, newTask]);
+    };
 
     function deleteTask(id) {
         api.delete(`api/note/delete/${id}/`)
             .then(
                 setTasks(tasks.filter((task) => task.id != id))
-            )
-    }
+            );
+    };
 
 
     const taskList = tasks.map((task) =>
@@ -75,7 +77,7 @@ function Home(props) {
         toggleTaskCompleted={toggleTaskCompleted}
         deleteTask={deleteTask}
         editTask={editTask}
-    />))
+    />));
 
 
     return (
@@ -85,7 +87,7 @@ function Home(props) {
                 {taskList}
             </Box>
         </Layout>
-    )
-}
+    );
+};
 
 export default Home;

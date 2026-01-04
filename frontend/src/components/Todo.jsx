@@ -1,24 +1,23 @@
-import React from 'react'
-import Box from '@mui/material/Box'
-import { useState } from 'react'
+import React from 'react';
+import Box from '@mui/material/Box';
+import { useState } from 'react';
 
 function Todo(props) {
-    const [isEditing, setIsEditing] = useState(false)
-    const [newName, setNewName] = useState(props.title)
+    const [isEditing, setIsEditing] = useState(false);
+    const [newName, setNewName] = useState(props.title);
 
     function handleEditTask(event) {
         if (newName) {
             event.preventDefault();
             props.editTask(props.id, newName);
-            setIsEditing(false)
-            setNewName(newName)
+            setIsEditing(false);
+            setNewName(newName);
         }
     }
 
-
     const viewTemplate = <>
         <Box sx={{ display: "flex", flexDirection: "row" }}>
-            <input type="checkbox" defaultChecked={props.completed} onChange={() => props.toggleTaskCompleted(props.id)}></input>
+            <input type="checkbox" checked={props.completed} onChange={() => props.toggleTaskCompleted(props.id, props.title, props.completed)}></input>
             <h2>
                 {props.title}
             </h2>
@@ -39,7 +38,7 @@ function Todo(props) {
         </Box>
     </>
 
-    return (isEditing ? changeTemplate : viewTemplate)
+    return (isEditing ? changeTemplate : viewTemplate);
 
 }
 
