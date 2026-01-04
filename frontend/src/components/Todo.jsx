@@ -7,8 +7,8 @@ function Todo(props) {
     const [newName, setNewName] = useState(props.title);
 
     function handleEditTask(event) {
-        if (newName) {
-            event.preventDefault();
+        event.preventDefault();
+        if (newName && props.title !== newName) {
             props.editTask(props.id, newName);
             setIsEditing(false);
             setNewName(newName);
