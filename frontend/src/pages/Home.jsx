@@ -8,9 +8,37 @@ import { useState } from 'react';
 import Todo from '../components/Todo';
 import api from '../api';
 import { useEffect } from 'react';
+import FilterButton from '../components/FilterButton';
+
+const FILTER_MAP = {
+    All: () => true,
+    Active: (task) => !task.completed,
+    Completed: (task) => task.completed,
+};
+
+const FILTER_NAMES = Object.keys(FILTER_MAP);
 
 function Home(props) {
     const [tasks, setTasks] = useState([]);
+    const [filter, setFilter] = useState("All")
+
+    const taskList = tasks.filter(FILTER_MAP[filter]).map((task) =>
+    (<Todo id={task.id}
+        title={task.title}
+        description={task.description}
+        publication_date={task.publication_date}
+        end_date={task.end_date}
+        completed={task.completed}
+        key={task.id}
+        toggleTaskCompleted={toggleTaskCompleted}
+        deleteTask={deleteTask}
+        editTask={editTask}
+    />));
+
+
+    const filterList = FILTER_NAMES.map((name) => (
+        <FilterButton key={name} name={name} isPressed={name === filter} setFilter={setFilter} />
+    ));
 
     async function fetchData() {
         api.get("api/note/all/")
@@ -65,23 +93,9 @@ function Home(props) {
             );
     };
 
-
-    const taskList = tasks.map((task) =>
-    (<Todo id={task.id}
-        title={task.title}
-        description={task.description}
-        publication_date={task.publication_date}
-        end_date={task.end_date}
-        completed={task.completed}
-        key={task.id}
-        toggleTaskCompleted={toggleTaskCompleted}
-        deleteTask={deleteTask}
-        editTask={editTask}
-    />));
-
-
     return (
         <Layout>
+            {filterList}
             <NoteForm addTask={addTask} />
             <Box sx={{ my: 2 }}>
                 {taskList}
