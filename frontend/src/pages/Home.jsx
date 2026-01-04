@@ -33,6 +33,7 @@ function Home(props) {
         toggleTaskCompleted={toggleTaskCompleted}
         deleteTask={deleteTask}
         editTask={editTask}
+        editDate={editDate}
     />));
 
 
@@ -79,6 +80,19 @@ function Home(props) {
                 setTasks(editedTaskList);
             }
             );
+    };
+
+    function editDate(id, taskTitle, taskEndDate) {
+        api.put(`/api/note/update/${id}/`, { title: taskTitle, end_date: taskEndDate })
+            .then(() => {
+                const editedTaskList = tasks.map((task) => {
+                    if (id === task.id) {
+                        return { ...task, end_date: taskEndDate };
+                    };
+                    return task;
+                });
+                setTasks(editedTaskList);
+            });
     };
 
     function addTask(name, id) {
