@@ -29,12 +29,26 @@ function Home(props) {
     function toggleTaskCompleted(id) {
         const updatedTasks = tasks.map((task) => {
             if (id === task.id) {
-                api.put(`/api/note/update/${id}/`, { title: task.title, completed: !task.completed })
+                api.put(`/api/note/update/${id}/`, { title: task.title, completed: !task.completed }) // FIXME 
                 return { ...task, completed: !task.completed };
             }
             return task;
         });
         setTasks(updatedTasks);
+    }
+
+    function editTask(id, newName) {
+        api.put(`/api/note/update/${id}/`, { title: newName })
+            .then(() => {
+                const editedTaskList = tasks.map((task) => {
+                    if (id === task.id) {
+                        return { ...task, title: newName }
+                    }
+                    return task
+                })
+                setTasks(editedTaskList)
+            }
+            )
     }
 
     function addTask(name, id) {
@@ -60,6 +74,7 @@ function Home(props) {
         key={task.id}
         toggleTaskCompleted={toggleTaskCompleted}
         deleteTask={deleteTask}
+        editTask={editTask}
     />))
 
 
