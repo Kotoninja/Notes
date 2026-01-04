@@ -1,17 +1,17 @@
 import React from "react";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
 
 function FilterButton(props) {
   return (
-    <button
-      type="button"
+    <Button
       className="btn toggle-btn"
+      variant="outlined"
       aria-pressed={props.isPressed}
       onClick={() => props.setFilter(props.name)}>
-      <span className="visually-hidden">Show </span>
-      <span>{props.name}</span>
-      <span className="visually-hidden"> tasks</span>
-    </button>
+      <Typography sx={{ textDecoration:(props.isPressed && "underline" ) }}>{props.name}</Typography>
+    </Button>
   );
-}
+};
 
 export default FilterButton;
