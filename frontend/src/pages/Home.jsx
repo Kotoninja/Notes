@@ -109,8 +109,8 @@ function Home(props) {
 
     return (
         <Layout>
-            {filterList}
             <NoteForm addTask={addTask} />
+            {/* {filterList} */}
             <Box sx={{ my: 2 }}>
                 {taskList}
             </Box>

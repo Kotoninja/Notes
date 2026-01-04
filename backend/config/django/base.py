@@ -139,7 +139,7 @@ CORS_ALLOW_ALL_ORIGINS = True
 # SPECTACULAR_SETTINGS = {
 #     'TITLE': 'Notes API',
 #     'DESCRIPTION': '',
-#     'VERSION': '0.0.1',
+#     'VERSION': '0.0.1', NOTE delete this
 #     'SERVE_INCLUDE_SCHEMA': False,
 #     # OTHER SETTINGS
 # }
