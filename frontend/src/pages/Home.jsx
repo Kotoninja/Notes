@@ -113,7 +113,7 @@ function Home(props) {
             <Box sx={{ display: "flex", gap: 5, justifyContent: "center" }}>
                 {filterList}
             </Box>
-            <Box sx={{ my: 2 }}>
+            <Box sx={{ my: 2, display:"flex", flexDirection:"column", gap:1}}>
                 {taskList}
             </Box>
         </Layout>

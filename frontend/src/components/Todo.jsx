@@ -1,6 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Box from '@mui/material/Box';
 import { useState } from 'react';
+import FormControl from '@mui/material/FormControl';
+import Checkbox from '@mui/material/Checkbox';
+import Input from '@mui/material/Input';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import CloseIcon from '@mui/icons-material/Close';
+import IconButton from '@mui/material/IconButton';
 
 function Todo(props) {
     const [isEditing, setIsEditing] = useState(false);
@@ -26,31 +33,66 @@ function Todo(props) {
         };
     };
 
+    useEffect(() => {
+        const handleClickOutside = (e) => {
+            if (!e.target.closest(`#task-${props.id}`)) {
+                setIsEditing(false);
+            };
+        };
+
+        document.addEventListener("mousedown", handleClickOutside, true);
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside, true);
+        };
+    }, [isEditing]);
+
     const viewTemplate = <>
-        <Box sx={{ display: "flex", flexDirection: "row" }}>
-            <input type="checkbox" checked={props.completed} onChange={() => props.toggleTaskCompleted(props.id, props.title, props.completed)}></input>
-            <h2>
+        <Box sx={{ display: "flex" }} onDoubleClick={() => setIsEditing(!isEditing)}>
+            <Checkbox checked={props.completed} onChange={() => props.toggleTaskCompleted(props.id, props.title, props.completed)} />
+            <Typography sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
                 {props.title}
-            </h2>
-            <button onClick={() => props.deleteTask(props.id)}>Delete</button>
-            <button onClick={() => setIsEditing(!isEditing)}>Change</button>
+            </Typography>
+            {/* <button onClick={() => props.deleteTask(props.id)}>Delete</button> */}
+            {/* <button onClick={() => setIsEditing(!isEditing)}>Change</button> */}
         </Box>
     </>
 
-    const changeTemplate = <>
-        <Box>
-            <form onSubmit={handleEditTask} >
-                <input type="text" value={newName} onChange={(e) => setNewName(e.target.value)} />
-                <input type="datetime-local" value={date} onChange={(e) => setDate(e.target.value)} />
-                <Box>
-                    <button type="submit">Save</button>
-                    <button onClick={() => setIsEditing(!isEditing)}>Cancel</button>
+    const changeTemplate = <Box sx={{ p: 1 }}>
+        <form onSubmit={handleEditTask} >
+            <FormControl sx={{ display: "flex" }}>
+                <Box sx={{ display: "flex" }}>
+                    <Checkbox checked={props.completed} onChange={() => props.toggleTaskCompleted(props.id, props.title, props.completed)} />
+                    <Input sx={{ width: "100%" }} type="text" value={newName} onChange={(e) => setNewName(e.target.value)} />
+                    <IconButton onClick={() => setIsEditing(!isEditing)}><CloseIcon /></IconButton>
                 </Box>
-            </form>
-        </Box>
-    </>
+                <Box sx={{ display: "flex", justifyContent: "center" }}>
+                    <Button sx={{ mt: 2, width: "30%" }} variant="contained" type="submit">Save</Button>
+                </Box>
+            </FormControl>
+            {/* <input type="text" value={newName} onChange={(e) => setNewName(e.target.value)} /> */}
+            {/* <input type="datetime-local" value={date} onChange={(e) => setDate(e.target.value)} />
+            <Box>
+                <button style={{userSelect:"none"}} type="submit">Save</button>
+                <button style={{userSelect:"none"}} onClick={() => setIsEditing(!isEditing)}>Cancel</button>
+            </Box> */}
+        </form>
+    </Box>
 
-    return (isEditing ? changeTemplate : viewTemplate);
+    return (
+        <Box
+            id={`task-${props.id}`}
+            sx={{
+                border: 2,
+                p: 0.5,
+                borderRadius: 3,
+                borderColor: "rgba(189, 189, 189, 0.5)",
+                cursor: isEditing ? 'default' : 'pointer',
+                userSelect: isEditing ? "auto" : "none"
+            }}>
+            {isEditing ? changeTemplate : viewTemplate}
+        </Box>
+    );
 
 };
 
