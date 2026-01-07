@@ -105,7 +105,7 @@ function Home() {
     function deleteTask(id) {
         api.delete(`api/note/delete/${id}/`)
             .then(
-                setTasks(tasks.filter((task) => task.id != id));
+                setTasks(tasks.filter((task) => task.id != id))
             );
     };
 
