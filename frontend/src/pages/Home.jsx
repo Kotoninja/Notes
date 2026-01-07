@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Link from "@mui/material/Link";
 import Box from "@mui/material/Box";
 import Layout from '../components/Layout';
@@ -9,6 +9,7 @@ import Todo from '../components/Todo';
 import api from '../api';
 import { useEffect } from 'react';
 import FilterButton from '../components/FilterButton';
+import UserContext from '../context/UserContext';
 
 const FILTER_MAP = {
     All: () => true,
@@ -18,9 +19,10 @@ const FILTER_MAP = {
 
 const FILTER_NAMES = Object.keys(FILTER_MAP);
 
-function Home(props) {
+function Home() {
     const [tasks, setTasks] = useState([]);
     const [filter, setFilter] = useState("All")
+    const context = useContext(UserContext)
 
     const taskList = tasks.filter(FILTER_MAP[filter]).map((task) =>
     (<Todo id={task.id}
@@ -109,13 +111,18 @@ function Home(props) {
 
     return (
         <Layout>
-            <NoteForm addTask={addTask} />
-            <Box sx={{ display: "flex", gap: 5, justifyContent: "center" }}>
-                {filterList}
-            </Box>
-            <Box sx={{ my: 2, display:"flex", flexDirection:"column", gap:1}}>
-                {taskList}
-            </Box>
+            {
+                context?.isAuthorized &&
+                <>
+                    <NoteForm addTask={addTask} />
+                    <Box sx={{ display: "flex", gap: 5, justifyContent: "center" }}>
+                        {filterList}
+                    </Box>
+                    <Box sx={{ my: 2, display: "flex", flexDirection: "column", gap: 1 }}>
+                        {taskList}
+                    </Box>
+                </>
+            }
         </Layout>
     );
 };
