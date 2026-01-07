@@ -32,7 +32,6 @@ import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 const NavBar = () => {
     const [open, setOpen] = useState(false);
     const context = useContext(UserContext);
-    console.log(context);
     const [openUser, setOpenUser] = useState(false);
 
     const handleClick = () => {

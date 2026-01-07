@@ -24,6 +24,10 @@ api.interceptors.response.use(
         const originalRequest = { ...error.config };
         originalRequest._isRetry = true;
 
+        if (error.config.url == "api/token/refresh/") {
+            localStorage.clear()
+        };
+
         if (error.status === 401 && error.config && !error.config._isRetry) {
             try {
                 const response = await api.post("api/token/refresh/", { refresh: localStorage.getItem(REFRESH_TOKEN) });
@@ -33,7 +37,7 @@ api.interceptors.response.use(
                 console.log(error);
             };
         };
-        
+
         throw error;
     }
 )
