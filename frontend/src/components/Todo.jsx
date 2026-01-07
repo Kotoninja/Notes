@@ -30,9 +30,9 @@ function Todo(props) {
         if (newName && newName !== props.title) {
             props.editTask(props.id, newName);
             setIsEditing(false);
-        }
+        };
         if (date !== defaultEndDate) {
-            props.editDate(props.id, props.title, date||null);
+            props.editDate(props.id, props.title, date || null);
         };
         setIsEditing(false);
     };

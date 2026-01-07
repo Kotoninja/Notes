@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import Box from "@mui/material/Box";
 import TextField from '@mui/material/TextField';
 import FormControl from '@mui/material/FormControl';
@@ -39,12 +39,12 @@ function Registration() {
             }
         } else {
             console.log("Username or password");
-        }
-    }
+        };
+    };
 
     function handleVisibility() {
         setVisibility(!visibility);
-    }
+    };
 
     return (
         <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh", flexDirection: "column" }}>
@@ -107,7 +107,7 @@ function Registration() {
                 <Typography sx={{ my: "10px", display: "flex", justifyContent: "center" }}>Already have an account? <Link sx={{ ml: "4px" }} href="/login">Sign in</Link></Typography>
             </form>
         </Box>
-    )
-}
+    );
+};
 
 export default Registration;

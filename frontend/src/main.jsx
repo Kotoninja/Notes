@@ -1,8 +1,8 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.jsx'
-import Snowfall from 'react-snowfall'
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import './index.css';
+import App from './App.jsx';
+import Snowfall from 'react-snowfall';
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -14,8 +14,8 @@ createRoot(document.getElementById('root')).render(
           width: '100vw',
           height: '100vh',
         }} snowflakeCount={150}
-        color='rgba(25, 118, 210, 0.4)'/>
+          color='rgba(25, 118, 210, 0.4)' />
       </div>
     </div>
   </StrictMode>
-)
+);

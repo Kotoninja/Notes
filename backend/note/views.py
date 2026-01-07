@@ -49,7 +49,7 @@ from cache.decorators import validate_cache
         },
     ),
 )
-# TODO JSON write time
+
 class NoteApi(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     queryset = Note.objects.all()
@@ -61,7 +61,6 @@ class NoteApi(viewsets.ModelViewSet):
         cache_data = cache.get(cache_key)
 
         if cache_data:
-            print("Cached")  # NOTE delete this line
             return Response(data=cache_data["data"], status=cache_data["status"])
         else:
             notes = Note.objects.filter(user=request.user)

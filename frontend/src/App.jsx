@@ -1,16 +1,16 @@
-import React from "react"
-import { BrowserRouter, Routes, Route } from "react-router-dom"
-import Home from "./pages/Home"
-import NotFound from "./pages/NotFound"
-import Login from "./pages/Login"
-import Registration from "./pages/Registration"
-import { UserProvider } from "./context/UserContext"
-import { Navigate } from "react-router-dom"
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import NotFound from "./pages/NotFound";
+import Login from "./pages/Login";
+import Registration from "./pages/Registration";
+import { UserProvider } from "./context/UserContext";
+import { Navigate } from "react-router-dom";
 
 function Logout() {
-  localStorage.clear()
+  localStorage.clear();
   return <Navigate to="/home" />
-}
+};
 
 function App() {
   return (
@@ -28,7 +28,7 @@ function App() {
         </Routes>
       </BrowserRouter>
     </UserProvider>
-  )
-}
+  );
+};
 
 export default App;

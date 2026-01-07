@@ -1,31 +1,31 @@
-import React from "react"
-import AppBar from "@mui/material/AppBar"
-import Toolbar from "@mui/material/Toolbar"
-import Container from "@mui/material/Container"
-import Box from "@mui/material/Box"
-import Button from "@mui/material/Button"
+import React from "react";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Container from "@mui/material/Container";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import notes from "../assets/notes.svg";
 import { grey } from "@mui/material/colors";
-import { useState } from "react"
+import { useState } from "react";
 import Drawer from '@mui/material/Drawer';
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
-import IconButton from "@mui/material/IconButton"
-import MenuItem from "@mui/material/MenuItem"
-import Divider from "@mui/material/Divider"
-import Link from "@mui/material/Link"
-import { useContext } from "react"
-import UserContext from "../context/UserContext"
+import IconButton from "@mui/material/IconButton";
+import MenuItem from "@mui/material/MenuItem";
+import Divider from "@mui/material/Divider";
+import Link from "@mui/material/Link";
+import { useContext } from "react";
+import UserContext from "../context/UserContext";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import SettingsIcon from '@mui/icons-material/Settings';
-import ListItemButton from "@mui/material/ListItemButton"
-import ListItemIcon from "@mui/material/ListItemIcon"
-import ListItemText from "@mui/material/ListItemText"
-import Avatar from "@mui/material/Avatar"
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import Avatar from "@mui/material/Avatar";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import Collapse from "@mui/material/Collapse"
-import List from "@mui/material/List"
-import ListItem from "@mui/material/ListItem"
+import Collapse from "@mui/material/Collapse";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
 import LogoutIcon from '@mui/icons-material/Logout';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 
@@ -50,7 +50,7 @@ const NavBar = () => {
             </ListItemIcon>
             <ListItemText primary={title[0]} />
         </ListItemButton>
-    )
+    );
 
     return (
         <AppBar
@@ -144,7 +144,7 @@ const NavBar = () => {
                 </Toolbar>
             </Container>
         </AppBar>
-    )
-}
+    );
+};
 
 export default NavBar;
