@@ -8,6 +8,10 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
+import Chip from '@mui/material/Chip';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import AlarmAddIcon from '@mui/icons-material/AlarmAdd';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 function Todo(props) {
     const [isEditing, setIsEditing] = useState(false);
@@ -17,7 +21,7 @@ function Todo(props) {
             var d = new Date(props.end_date);
             return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}T${String(d.getHours()).padStart(2, "0")}:${String(d.getMinutes()).padStart(2, "0")}`;
         };
-        return undefined;
+        return "";
     })();
     const [date, setDate] = useState(defaultEndDate);
 
@@ -28,14 +32,14 @@ function Todo(props) {
             setIsEditing(false);
         }
         if (date !== defaultEndDate) {
-            props.editDate(props.id, props.title, date);
-            setIsEditing(false);
+            props.editDate(props.id, props.title, date||null);
         };
+        setIsEditing(false);
     };
 
     useEffect(() => {
         const handleClickOutside = (e) => {
-            if (!e.target.closest(`#task-${props.id}`)) {
+            if (!(e.target.closest(`.task-${props.id}`))) {
                 setIsEditing(false);
             };
         };
@@ -45,18 +49,19 @@ function Todo(props) {
         return () => {
             document.removeEventListener("mousedown", handleClickOutside, true);
         };
-    }, [isEditing]);
+    }, [defaultEndDate, props.id, date]);
 
     const viewTemplate = <>
-        <Box sx={{ display: "flex" }} onDoubleClick={() => setIsEditing(!isEditing)}>
-            <Checkbox checked={props.completed} onChange={() => props.toggleTaskCompleted(props.id, props.title, props.completed)} />
-            <Typography sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
-                {props.title}
-            </Typography>
-            {/* <button onClick={() => props.deleteTask(props.id)}>Delete</button> */}
-            {/* <button onClick={() => setIsEditing(!isEditing)}>Change</button> */}
+        <Box sx={{ display: "flex", flexDirection: "column" }} onDoubleClick={() => setIsEditing(!isEditing)}>
+            <Box sx={{ display: "flex" }}>
+                <Checkbox checked={props.completed} onChange={() => props.toggleTaskCompleted(props.id, props.title, props.completed)} />
+                <Typography sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
+                    {props.title}
+                </Typography>
+            </Box>
+            {defaultEndDate && <Box sx={{ display: "flex", p: 1 }}><Chip icon={<AccessTimeIcon />} label={<time dateTime={defaultEndDate}>{defaultEndDate && String(defaultEndDate).replace("T", " ")}</time>} /></Box>}
         </Box>
-    </>
+    </>;
 
     const changeTemplate = <Box sx={{ p: 1 }}>
         <form onSubmit={handleEditTask} >
@@ -66,22 +71,24 @@ function Todo(props) {
                     <Input sx={{ width: "100%" }} type="text" value={newName} onChange={(e) => setNewName(e.target.value)} />
                     <IconButton onClick={() => setIsEditing(!isEditing)}><CloseIcon /></IconButton>
                 </Box>
-                <Box sx={{ display: "flex", justifyContent: "center" }}>
-                    <Button sx={{ mt: 2, width: "30%" }} variant="contained" type="submit">Save</Button>
+                <Box className={`task-${props.id}`}>
+                    <Chip sx={{ mt: 3 }}
+                        icon={<AlarmAddIcon />}
+                        label={<input style={{ border: 0, backgroundColor: "inherit" }} type="datetime-local" value={date} onChange={(e) => setDate(e.target.value)} />}
+                        onDelete={() => { setDate("") }}
+                    />
+                </Box>
+                <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", mt: 2 }}>
+                    <Button sx={{ width: "30%" }} variant="contained" type="submit">Save</Button>
+                    <IconButton sx={{ position: "absolute", right: 0 }} onClick={() => props.deleteTask(props.id)}><DeleteIcon color="error" /></IconButton>
                 </Box>
             </FormControl>
-            {/* <input type="text" value={newName} onChange={(e) => setNewName(e.target.value)} /> */}
-            {/* <input type="datetime-local" value={date} onChange={(e) => setDate(e.target.value)} />
-            <Box>
-                <button style={{userSelect:"none"}} type="submit">Save</button>
-                <button style={{userSelect:"none"}} onClick={() => setIsEditing(!isEditing)}>Cancel</button>
-            </Box> */}
         </form>
-    </Box>
+    </Box>;
 
     return (
         <Box
-            id={`task-${props.id}`}
+            className={`task-${props.id}`}
             sx={{
                 border: 2,
                 p: 0.5,

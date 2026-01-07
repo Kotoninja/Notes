@@ -7,7 +7,6 @@ import Registration from "./pages/Registration"
 import { UserProvider } from "./context/UserContext"
 import { Navigate } from "react-router-dom"
 
-
 function Logout() {
   localStorage.clear()
   return <Navigate to="/home" />
