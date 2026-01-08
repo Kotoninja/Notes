@@ -4,7 +4,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import notes from "../assets/notes.svg";
+import notesLabel from "../assets/notesLabel.svg";
 import { grey } from "@mui/material/colors";
 import { useState } from "react";
 import Drawer from '@mui/material/Drawer';
@@ -23,7 +23,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Avatar from "@mui/material/Avatar";
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import Collapse from "@mui/material/Collapse";
+import Collapse from "@mui/material/Collapse"; 
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -62,7 +62,7 @@ const NavBar = () => {
                 <Toolbar variant="string" sx={{ backgroundColor: "rgba(26, 35, 126, 0.4)", backdropFilter: "blur(12px)", borderRadius: 4, p: 1 }}>
                     <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', px: 0, }}>
                         <Link href="/home">
-                            <img src={notes} style={{ width: 100, display: "flex", justifyContent: "center" }} />
+                            <img src={notesLabel} style={{ width: 100, display: "flex", justifyContent: "center" }} />
                         </Link>
                         <Box sx={{ display: { xs: 'none', md: 'flex' }, justifyContent: "center", flex: 1 }}>
                             <Button variant="text" color="white" href="/home">
