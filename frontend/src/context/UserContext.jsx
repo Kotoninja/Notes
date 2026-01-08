@@ -7,7 +7,7 @@ const UserContext = createContext(null);
 export const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [isAuthorized, setIsAuthorized] = useState(false)
+    const [isAuthorized, setIsAuthorized] = useState(false);
 
     const fetchUser = async () => {
         try {
@@ -15,13 +15,13 @@ export const UserProvider = ({ children }) => {
             if (!token) {
                 setLoading(false);
                 return;
-            }
+            };
 
             api.get("/api/user/context")
                 .then(function (response) {
                     const userData = response.data;
                     setUser(userData);
-                    setIsAuthorized(true)
+                    setIsAuthorized(true);
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -29,12 +29,12 @@ export const UserProvider = ({ children }) => {
                     setIsAuthorized(false);
                 })
                 .finally(function () {
-                    setLoading(false)
+                    setLoading(false);
                 });
 
         } catch (error) {
             Promise.reject('Error fetching user:', error);
-            setIsAuthorized(false)
+            setIsAuthorized(false);
         } finally {
             // 
         }
@@ -44,12 +44,12 @@ export const UserProvider = ({ children }) => {
         fetchUser();
     }, []);
 
-    let value = { isAuthorized, setIsAuthorized, user, setUser, loading, setLoading, fetchUser }
+    let value = { isAuthorized, setIsAuthorized, user, setUser, loading, setLoading, fetchUser };
     return (
         <UserContext.Provider value={value}>
             {children}
         </UserContext.Provider>
     );
-}
+};
 
 export default UserContext;

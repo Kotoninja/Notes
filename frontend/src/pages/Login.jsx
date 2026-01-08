@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import Box from "@mui/material/Box";
 import TextField from '@mui/material/TextField';
 import FormControl from '@mui/material/FormControl';
@@ -15,16 +15,16 @@ import UserContext from '../context/UserContext';
 import { useContext } from 'react';
 
 function Login() {
-    const [username, setUsername] = useState("")
-    const [password, setPassword] = useState("")
-    const [visibility, setVisibility] = useState(false)
-    const [loading, setLoading] = useState(false)
-    const [formError, setFormError] = useState(false)
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [visibility, setVisibility] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [formError, setFormError] = useState(false);
     const navigate = useNavigate();
-    const context = useContext(UserContext)
+    const context = useContext(UserContext);
 
     async function handleFrom(e) {
-        e.preventDefault()
+        e.preventDefault();
 
 
         if (password && username) {
@@ -35,21 +35,21 @@ function Login() {
                         localStorage.setItem(ACCESS_TOKEN, response.data.access);
                         localStorage.setItem(REFRESH_TOKEN, response.data.refresh);
                         context?.fetchUser();
-                        navigate("/home")
-                    })
+                        navigate("/home");
+                    });
             } catch (error) {
-                setFormError(true)
+                setFormError(true);
             } finally {
                 setLoading(false);
-            }
+            };
         } else {
-            console.log("Username or password")
-        }
-    }
+            console.log("Username or password");
+        };
+    };
 
     function handleVisibility() {
-        setVisibility(!visibility)
-    }
+        setVisibility(!visibility);
+    };
 
     return (
         <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh", flexDirection: "column" }}>
@@ -96,7 +96,7 @@ function Login() {
                 <Box sx={{ my: "10px", display: "flex", justifyContent: "center" }}>Don't have an account? <Link sx={{ ml: "4px" }} href="/registration">Sing up</Link></Box>
             </form>
         </Box>
-    )
-}
+    );
+};
 
 export default Login;

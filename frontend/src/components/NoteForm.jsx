@@ -7,7 +7,7 @@ import OutlinedInput from '@mui/material/TextField';
 
 function NoteForm(props) {
     const [name, setName] = useState("");
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false);
 
     function handleForm(event) {
         event.preventDefault();
@@ -15,13 +15,12 @@ function NoteForm(props) {
             setLoading(true)
             api.post("/api/note/create/", { title: name })
                 .then(function (response) {
-                    console.log(response)
-                    props.addTask(name, response?.data?.id)
+                    props.addTask(name, response?.data?.id);
                 })
-                .finally(setLoading(false))
-            setName("")
-        }
-    }
+                .finally(setLoading(false));
+            setName("");
+        };
+    };
 
     return (
         <>
@@ -33,7 +32,7 @@ function NoteForm(props) {
                 </FormControl>
             </form>
         </>
-    )
-}
+    );
+};
 
-export default NoteForm
+export default NoteForm;

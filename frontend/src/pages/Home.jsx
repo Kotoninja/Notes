@@ -21,8 +21,8 @@ const FILTER_NAMES = Object.keys(FILTER_MAP);
 
 function Home() {
     const [tasks, setTasks] = useState([]);
-    const [filter, setFilter] = useState("All")
-    const context = useContext(UserContext)
+    const [filter, setFilter] = useState("All");
+    const context = useContext(UserContext);
 
     const taskList = tasks.filter(FILTER_MAP[filter]).map((task) =>
     (<Todo id={task.id}
