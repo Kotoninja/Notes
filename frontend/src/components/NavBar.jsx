@@ -61,15 +61,12 @@ const NavBar = () => {
             <Container>
                 <Toolbar variant="string" sx={{ backgroundColor: "rgba(26, 35, 126, 0.4)", backdropFilter: "blur(12px)", borderRadius: 4, p: 1 }}>
                     <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', px: 0, }}>
-                        <Link href="/">
+                        <Link href="/home">
                             <img src={notes} style={{ width: 100, display: "flex", justifyContent: "center" }} />
                         </Link>
                         <Box sx={{ display: { xs: 'none', md: 'flex' }, justifyContent: "center", flex: 1 }}>
                             <Button variant="text" color="white" href="/home">
                                 Home
-                            </Button>
-                            <Button variant="text" color="white" sx={{ minWidth: 0 }} href="/faq">
-                                FAQ
                             </Button>
                         </Box>
 
