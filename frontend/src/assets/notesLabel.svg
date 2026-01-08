@@ -5,12 +5,9 @@
       <stop offset="100%" stop-color="#ffffffff" />
     </linearGradient>
   </defs>
-  <!-- Иконка -->
   <rect x="10" y="15" width="50" height="50" rx="5" fill="none" stroke="url(#grad3)" stroke-width="3"/>
-  <!-- Разные цвета для каждой линии -->
   <line x1="20" y1="30" x2="40" y2="30" stroke="#ffffffff" stroke-width="4" stroke-linecap="round"/>
   <line x1="20" y1="40" x2="40" y2="40" stroke="#ffffffff" stroke-width="4" stroke-linecap="round"/>
   <line x1="20" y1="50" x2="30" y2="50" stroke="#ffffffff" stroke-width="4" stroke-linecap="round"/>
-  <!-- Текст -->
   <text x="75" y="52" font-family="Arial, sans-serif" font-size="42" font-weight="bold" fill="url(#grad3)">Notes</text>
 </svg>
