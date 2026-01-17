@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
-from .serializers import NoteSerializer
+from .serializers import NoteSerializer, NoteCreateSerializer
 from rest_framework.response import Response
 from rest_framework import permissions
 from rest_framework import status
@@ -21,9 +21,9 @@ from cache.decorators import validate_cache
     ),
     create=extend_schema(
         summary="Create a note",
-        description="'publication_date' sets the current time and <b>NEVER</b> changes. <br> The 'completed' parameter is <b>always</b> 'false'. <br> The user is determined by the request. ",
+        request=NoteCreateSerializer,
         responses={
-            status.HTTP_201_CREATED: NoteSerializer,
+            status.HTTP_201_CREATED: NoteCreateSerializer,
             status.HTTP_400_BAD_REQUEST: OpenApiResponse(
                 response={}, description="Bad request"
             ),
@@ -81,8 +81,8 @@ class NoteApi(viewsets.ModelViewSet):
 
     @validate_cache(key="user:{id}:notes:all")
     def create(self, request):
-        context: dict = {"user": request.user.pk, **request.data, "completed": False}
-        serializer = self.get_serializer(data=context)
+        context: dict = {"user": request.user.pk, **request.data}
+        serializer = NoteCreateSerializer(data=context)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(data=serializer.data, status=status.HTTP_201_CREATED)

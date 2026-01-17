@@ -7,10 +7,6 @@ class NoteSerializer(serializers.ModelSerializer):
         model = Note
         fields = "__all__"
 
-    def create(self, validated_data):
-        note = Note.objects.create(**validated_data)
-        return note
-
     def update(self, instance, validated_data):
         instance.title = validated_data.get("title", instance.title)
         instance.description = validated_data.get("description", instance.description)
@@ -18,3 +14,15 @@ class NoteSerializer(serializers.ModelSerializer):
         instance.completed = validated_data.get("completed", instance.completed)
         instance.save()
         return instance
+
+
+class NoteCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Note
+        fields = ["user", "title", "description"]
+
+    def create(self, validated_data):
+        note = Note.objects.create(
+            **{**validated_data, "completed": False},
+        )
+        return note
