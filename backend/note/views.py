@@ -11,6 +11,8 @@ from django.core.cache import cache
 from cache.decorators import validate_cache
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.authentication import SessionAuthentication
+from typing import cast
+
 
 @extend_schema_view(
     list=extend_schema(
@@ -82,18 +84,19 @@ class NoteApi(viewsets.ModelViewSet):
 
     @validate_cache(key="user:{id}:notes:all")
     def create(self, request):
-        serializer = NoteCreateSerializer(data= request.data)
+        serializer = NoteCreateSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
-            serializer.save(user=request.user)
-            return Response(data=serializer.data, status=status.HTTP_201_CREATED)
+            new_note = cast(Note, serializer.save(user=request.user))
+            response_data = dict(serializer.data) | {"id": new_note.pk}
+            return Response(data=response_data, status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
-    @validate_cache(key="user:{id}:notes:all")
+    @validate_cache(key="user:{id }:notes:all")
     def update(self, request, pk):
         note = get_object_or_404(Note, pk=pk, user=request.user)
         serializer = NoteUpdateSerializer(note, data=request.data)
         if serializer.is_valid(raise_exception=True):
-            serializer.save(user = request.user)
+            serializer.save(user=request.user)
             return Response(data=serializer.data, status=status.HTTP_200_OK)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
