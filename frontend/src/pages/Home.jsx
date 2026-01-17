@@ -58,7 +58,9 @@ function Home() {
 
 
     function toggleTaskCompleted(id, taskTitle, taskCompleted) {
-        api.put(`/api/note/update/${id}/`, { title: taskTitle, completed: !taskCompleted })
+        api.put(`/api/note/update/${id}/`, {
+            completed: !taskCompleted
+        })
             .then(() => {
                 const updatedTasks = tasks.map((task) => {
                     if (id === task.id) {

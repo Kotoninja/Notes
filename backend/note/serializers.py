@@ -22,7 +22,6 @@ class NoteCreateSerializer(serializers.ModelSerializer):
         fields = ["title", "description"]
 
     def create(self, validated_data):
-        print(self.data)
         note = Note.objects.create(
             **{**validated_data, "completed": False},
         )
