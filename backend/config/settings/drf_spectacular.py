@@ -50,7 +50,7 @@ SPECTACULAR_SETTINGS: Dict[str, Any] = {
     # list of authentication/permission classes for spectacular's views.
     "SERVE_PERMISSIONS": ["rest_framework.permissions.AllowAny"],
     # None will default to DRF's AUTHENTICATION_CLASSES
-    "SERVE_AUTHENTICATION": None,
+    "SERVE_AUTHENTICATION": ["rest_framework_simplejwt.authentication.JWTAuthentication"],
     # Dictionary of general configuration to pass to the SwaggerUI({ ... })
     # https://swagger.io/docs/open-source-tools/swagger-ui/usage/configuration/
     # The settings are serialized with json.dumps(). If you need customized JS, use a

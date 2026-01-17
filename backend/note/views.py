@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
-from .serializers import NoteSerializer, NoteCreateSerializer
+from .serializers import NoteSerializer, NoteCreateSerializer, NoteUpdateSerializer
 from rest_framework.response import Response
 from rest_framework import permissions
 from rest_framework import status
@@ -9,13 +9,14 @@ from drf_spectacular.utils import extend_schema, extend_schema_view
 from drf_spectacular.utils import OpenApiResponse, OpenApiExample
 from django.core.cache import cache
 from cache.decorators import validate_cache
-
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.authentication import SessionAuthentication
 
 @extend_schema_view(
     list=extend_schema(
         summary="All user notes.",
         responses={
-            status.HTTP_200_OK: NoteSerializer,
+            status.HTTP_200_OK: NoteSerializer(many=True),
             status.HTTP_204_NO_CONTENT: OpenApiResponse(response={}),
         },
     ),
@@ -32,8 +33,9 @@ from cache.decorators import validate_cache
     update=extend_schema(
         summary="Update a note.",
         description="The value of 'user' <b>does not</b> change.",
+        request=NoteUpdateSerializer,
         responses={
-            status.HTTP_200_OK: NoteSerializer,
+            status.HTTP_200_OK: NoteUpdateSerializer,
             status.HTTP_404_NOT_FOUND: OpenApiResponse(
                 response={}, description="Not found"
             ),
@@ -49,7 +51,6 @@ from cache.decorators import validate_cache
         },
     ),
 )
-
 class NoteApi(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     queryset = Note.objects.all()
@@ -92,10 +93,11 @@ class NoteApi(viewsets.ModelViewSet):
     def update(self, request, pk):
         note = get_object_or_404(Note, pk=pk, user=request.user)
         context: dict = {"user": request.user.pk, **request.data}
-        serializer = self.get_serializer(note, context)
+        serializer = NoteUpdateSerializer(note, data=context)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(data=serializer.data, status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
     @validate_cache(key="user:{id}:notes:all")
     def destroy(self, request, pk):
