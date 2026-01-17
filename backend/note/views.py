@@ -82,20 +82,18 @@ class NoteApi(viewsets.ModelViewSet):
 
     @validate_cache(key="user:{id}:notes:all")
     def create(self, request):
-        context: dict = {"user": request.user.pk, **request.data}
-        serializer = NoteCreateSerializer(data=context)
+        serializer = NoteCreateSerializer(data= request.data)
         if serializer.is_valid(raise_exception=True):
-            serializer.save()
+            serializer.save(user=request.user)
             return Response(data=serializer.data, status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
     @validate_cache(key="user:{id}:notes:all")
     def update(self, request, pk):
         note = get_object_or_404(Note, pk=pk, user=request.user)
-        context: dict = {"user": request.user.pk, **request.data}
-        serializer = NoteUpdateSerializer(note, data=context)
+        serializer = NoteUpdateSerializer(note, data=request.data)
         if serializer.is_valid(raise_exception=True):
-            serializer.save()
+            serializer.save(user = request.user)
             return Response(data=serializer.data, status=status.HTTP_200_OK)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
