@@ -5,7 +5,7 @@ from .models import Note
 class NoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Note
-        fields = "__all__"
+        exclude = ["user"]
 
     def update(self, instance, validated_data):
         instance.title = validated_data.get("title", instance.title)
@@ -19,9 +19,10 @@ class NoteSerializer(serializers.ModelSerializer):
 class NoteCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Note
-        fields = ["user", "title", "description"]
+        fields = ["title", "description"]
 
     def create(self, validated_data):
+        print(self.data)
         note = Note.objects.create(
             **{**validated_data, "completed": False},
         )
@@ -31,7 +32,7 @@ class NoteCreateSerializer(serializers.ModelSerializer):
 class NoteUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Note
-        fields = ["user", "title", "description", "completed", "publication_date"]
+        fields = ["title", "description", "completed", "publication_date"]
 
     def update(self, instance, validated_data):
         instance.title = validated_data.get("title", instance.title)
