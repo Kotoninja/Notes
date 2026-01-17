@@ -13,7 +13,6 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.authentication import SessionAuthentication
 from typing import cast
 
-
 @extend_schema_view(
     list=extend_schema(
         summary="All user notes.",
@@ -34,7 +33,6 @@ from typing import cast
     ),
     update=extend_schema(
         summary="Update a note.",
-        description="The value of 'user' <b>does not</b> change.",
         request=NoteUpdateSerializer,
         responses={
             status.HTTP_200_OK: NoteUpdateSerializer,
