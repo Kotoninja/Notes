@@ -7,7 +7,7 @@ from django.core.cache import cache
 
 class Note(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    title = models.CharField(max_length=200)
+    title = models.CharField(max_length=200, blank=True)
     description = models.CharField(max_length=150, blank=True)
     publication_date = models.DateTimeField(auto_now_add=True)
     end_date = models.DateTimeField(blank=True, null=True)

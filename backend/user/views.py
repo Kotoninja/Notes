@@ -12,7 +12,7 @@ from rest_framework import status
 )
 class UserAPIList(generics.ListAPIView):
     queryset = User.objects.all()
-    serializer_class = UserSerializer
+    serializer_class = UserSerializer # TODO Delete this class
     permission_classes = [
         IsAuthenticated,
     ]

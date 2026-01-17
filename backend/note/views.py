@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
-from .serializers import NoteSerializer
+from .serializers import NoteSerializer, NoteCreateSerializer, NoteUpdateSerializer
 from rest_framework.response import Response
 from rest_framework import permissions
 from rest_framework import status
@@ -9,21 +9,23 @@ from drf_spectacular.utils import extend_schema, extend_schema_view
 from drf_spectacular.utils import OpenApiResponse, OpenApiExample
 from django.core.cache import cache
 from cache.decorators import validate_cache
-
+from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework.authentication import SessionAuthentication
+from typing import cast
 
 @extend_schema_view(
     list=extend_schema(
         summary="All user notes.",
         responses={
-            status.HTTP_200_OK: NoteSerializer,
+            status.HTTP_200_OK: NoteSerializer(many=True),
             status.HTTP_204_NO_CONTENT: OpenApiResponse(response={}),
         },
     ),
     create=extend_schema(
         summary="Create a note",
-        description="'publication_date' sets the current time and <b>NEVER</b> changes. <br> The 'completed' parameter is <b>always</b> 'false'. <br> The user is determined by the request. ",
+        request=NoteCreateSerializer,
         responses={
-            status.HTTP_201_CREATED: NoteSerializer,
+            status.HTTP_201_CREATED: NoteCreateSerializer,
             status.HTTP_400_BAD_REQUEST: OpenApiResponse(
                 response={}, description="Bad request"
             ),
@@ -31,9 +33,9 @@ from cache.decorators import validate_cache
     ),
     update=extend_schema(
         summary="Update a note.",
-        description="The value of 'user' <b>does not</b> change.",
+        request=NoteUpdateSerializer,
         responses={
-            status.HTTP_200_OK: NoteSerializer,
+            status.HTTP_200_OK: NoteUpdateSerializer,
             status.HTTP_404_NOT_FOUND: OpenApiResponse(
                 response={}, description="Not found"
             ),
@@ -49,7 +51,6 @@ from cache.decorators import validate_cache
         },
     ),
 )
-
 class NoteApi(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     queryset = Note.objects.all()
@@ -81,21 +82,21 @@ class NoteApi(viewsets.ModelViewSet):
 
     @validate_cache(key="user:{id}:notes:all")
     def create(self, request):
-        context: dict = {"user": request.user.pk, **request.data, "completed": False}
-        serializer = self.get_serializer(data=context)
+        serializer = NoteCreateSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return Response(data=serializer.data, status=status.HTTP_201_CREATED)
+            new_note = cast(Note, serializer.save(user=request.user))
+            response_data = dict(serializer.data) | {"id": new_note.pk}
+            return Response(data=response_data, status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
-    @validate_cache(key="user:{id}:notes:all")
+    @validate_cache(key="user:{id }:notes:all")
     def update(self, request, pk):
         note = get_object_or_404(Note, pk=pk, user=request.user)
-        context: dict = {"user": request.user.pk, **request.data}
-        serializer = self.get_serializer(note, context)
+        serializer = NoteUpdateSerializer(note, data=request.data)
         if serializer.is_valid(raise_exception=True):
-            serializer.save()
+            serializer.save(user=request.user)
             return Response(data=serializer.data, status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
     @validate_cache(key="user:{id}:notes:all")
     def destroy(self, request, pk):
