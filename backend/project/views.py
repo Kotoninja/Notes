@@ -1,8 +1,14 @@
 from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework import viewsets
+from project.models import Project
+from rest_framework.permissions import IsAuthenticated
 
+class ProjectAPI(viewsets.ModelViewSet):
+    queryset = Project.objects.all()
+    permission_classes = [IsAuthenticated,]
 
-@api_view(["GET"])
-def check(request):
-    return Response(data={"status": "ok"}, status=status.HTTP_200_OK)
+    
+    
+    def list(self, request):
+        
