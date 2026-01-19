@@ -3,11 +3,15 @@ from django.contrib.auth.models import User
 from django.dispatch import receiver
 from django.db.models.signals import post_save, post_delete
 from django.core.cache import cache
+from project.models import Project
 
 
 class Note(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    title = models.CharField(max_length=200, blank=True)
+    project = models.ForeignKey(
+        Project, on_delete=models.SET_NULL, related_name="tags", null=True, blank=True
+    )
+    title = models.CharField(max_length=200, blank=True) # BUG When creating a title, add text such as "untitled".
     description = models.CharField(max_length=150, blank=True)
     publication_date = models.DateTimeField(auto_now_add=True)
     end_date = models.DateTimeField(blank=True, null=True)
