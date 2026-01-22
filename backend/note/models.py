@@ -9,7 +9,7 @@ from project.models import Project
 class Note(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     project = models.ForeignKey(
-        Project, on_delete=models.SET_NULL, related_name="tags", null=True, blank=True
+        Project, on_delete=models.SET_NULL, related_name="notes", null=True, blank=True
     )
     title = models.CharField(max_length=200, blank=True) # BUG When creating a title, add text such as "untitled".
     description = models.CharField(max_length=150, blank=True)
