@@ -21,7 +21,7 @@ class ProjectInputSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
         exclude = ["user"]
-        read_only_fields = ["id"]
+        read_only_fields = ["id", "created"]
 
     def create(self, validated_data):
         new_project = Project.objects.create(**validated_data)
