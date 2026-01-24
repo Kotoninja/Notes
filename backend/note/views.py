@@ -6,11 +6,9 @@ from rest_framework import permissions
 from rest_framework import status
 from .models import Note
 from drf_spectacular.utils import extend_schema, extend_schema_view
-from drf_spectacular.utils import OpenApiResponse, OpenApiExample
+from drf_spectacular.utils import OpenApiResponse
 from django.core.cache import cache
 from cache.decorators import validate_cache
-from rest_framework_simplejwt.authentication import JWTAuthentication
-from rest_framework.authentication import SessionAuthentication
 from typing import cast
 
 @extend_schema_view(

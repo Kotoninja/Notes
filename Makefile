@@ -8,3 +8,9 @@ bk-bash: ## Open bash in backend container
 	docker compose exec -it backend bash
 redis-cli: ## Open redis-cli
 	docker compose exec -it redis redis-cli
+up: ## Up all container
+	docker compose up
+restart: ## Restart all container
+	docker compose restart
+kill: ## Kill postgres port
+	sudo kill -9 $$(sudo lsof -t -i:5432)
