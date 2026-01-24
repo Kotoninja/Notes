@@ -2,7 +2,9 @@
 help: ## Shows this help message
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
-bk_shell: ## Open python manage.py shell in backend container
+bk-shell: ## Open python manage.py shell in backend container
 	docker compose exec -it backend python manage.py shell
-bk_bash: ## Open bash in backend container
+bk-bash: ## Open bash in backend container
 	docker compose exec -it backend bash
+redis-cli: ## Open redis-cli
+	docker compose exec -it redis redis-cli
