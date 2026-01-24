@@ -40,3 +40,9 @@ class NoteUpdateSerializer(serializers.ModelSerializer):
         instance.completed = validated_data.get("completed", instance.completed)
         instance.save()
         return instance
+
+
+class NoteDetailOutputSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Note
+        exclude = ["user", "project"]
