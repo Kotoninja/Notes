@@ -12,11 +12,53 @@ from project.serializers import (
 )
 from django.core.cache import cache
 from cache import keys
+from drf_spectacular.utils import extend_schema, extend_schema_view
+from drf_spectacular.utils import OpenApiResponse
 
 
+@extend_schema_view(
+    list=extend_schema(
+        summary="All user projects.",
+        responses={
+            status.HTTP_200_OK: ProjectOutputSerializer(many=True),
+        },
+    ),
+    retrieve=extend_schema(
+        summary="Project detail.",
+        responses={
+            status.HTTP_200_OK: ProjectDetailOutputSerializer(),
+        },
+    ),
+    create=extend_schema(
+        summary="Create a project",
+        request=ProjectInputSerializer,
+        responses={
+            status.HTTP_201_CREATED: ProjectInputSerializer,
+        },
+    ),
+    partial_update=extend_schema(
+        summary="Project partial update.",
+        responses={
+            status.HTTP_200_OK: ProjectInputSerializer,
+            status.HTTP_404_NOT_FOUND: OpenApiResponse(
+                response={}, description="Not found"
+            ),
+        },
+    ),
+    destroy=extend_schema(
+        summary="Destroy a project.",
+        responses={
+            status.HTTP_200_OK: OpenApiResponse(response={}, description="Ok"),
+            status.HTTP_404_NOT_FOUND: OpenApiResponse(
+                response={}, description="Not found"
+            ),
+        },
+    ),
+)
 class ProjectAPI(viewsets.ModelViewSet):
     queryset = Project.objects.all()
     permission_classes = [IsAuthenticated]
+    serializer_class = ProjectInputSerializer
 
     def list(self, request):
         cache_key = keys.PROJECT_ALL.format(id=request.user.pk)
