@@ -16,8 +16,11 @@ projects_pattern = [
         view=views.ProjectAPI.as_view({"delete": "destroy"}),
         name="delete",
     ),
-    path("create/", view=views.ProjectAPI.as_view({"post":"create"})),
-    path("partial_update/<int:pk>/", view=views.ProjectAPI.as_view({"put":"partial_update"}))
+    path("create/", view=views.ProjectAPI.as_view({"post": "create"})),
+    path(
+        "partial_update/<int:pk>/",
+        view=views.ProjectAPI.as_view({"put": "partial_update"}),
+    ),
 ]
 
 urlpatterns = [

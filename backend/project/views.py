@@ -1,25 +1,17 @@
-from typing import Never
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import viewsets
 from project.models import Project
 from rest_framework.permissions import IsAuthenticated
-from rest_framework import serializers
 from django.shortcuts import get_object_or_404
-from note.models import Note
-from note.serializers import NoteDetailOutputSerializer
 from typing import cast
 from project.serializers import (
     ProjectDetailOutputSerializer,
     ProjectInputSerializer,
     ProjectOutputSerializer,
 )
-
-"""
-[x] API CRUD
-[ ] Cache
-[ ] Update OpenAPI
-"""
+from django.core.cache import cache
+from cache import keys
 
 
 class ProjectAPI(viewsets.ModelViewSet):
@@ -27,17 +19,43 @@ class ProjectAPI(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
 
     def list(self, request):
-        serializer = ProjectOutputSerializer(
-            self.queryset.filter(user=request.user), many=True
-        )
-        return Response(data=serializer.data, status=status.HTTP_200_OK)
+        cache_key = keys.PROJECT_ALL.format(id=request.user.pk)
+
+        cache_data = cache.get(key=cache_key)
+
+        if cache_data:
+            # print("Cached")
+            return Response(data=cache_data["data"], status=cache_data["status"])
+        else:
+            serializer = ProjectOutputSerializer(
+                self.queryset.filter(user=request.user), many=True
+            )
+            cache.set(
+                key=cache_key,
+                value={"data": serializer.data, "status": status.HTTP_200_OK},
+                timeout=600,
+            )
+            return Response(data=serializer.data, status=status.HTTP_200_OK)
 
     def retrieve(self, request, pk=None):
-        project = get_object_or_404(
-            self.queryset.prefetch_related("notes"), pk=pk, user=request.user
-        )
-        serializer = ProjectDetailOutputSerializer(project)
-        return Response(data=serializer.data, status=status.HTTP_200_OK)
+        cache_key = keys.PROJECT_DETAIL.format(id=request.user.pk, pk=pk)
+
+        cache_data = cache.get(key=cache_key)
+
+        if cache_data:
+            # print("Cached")
+            return Response(data=cache_data["data"], status=cache_data["status"])
+        else:
+            project = get_object_or_404(
+                self.queryset.prefetch_related("notes"), pk=pk, user=request.user
+            )
+            serializer = ProjectDetailOutputSerializer(project)
+            cache.set(
+                key=cache_key,
+                value={"data": serializer.data, "status": status.HTTP_200_OK},
+                timeout=600,
+            )
+            return Response(data=serializer.data, status=status.HTTP_200_OK)
 
     def create(self, request):
         serializer = ProjectInputSerializer(data=request.data)
