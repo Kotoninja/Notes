@@ -89,7 +89,7 @@ class NoteApi(viewsets.ModelViewSet):
             return Response(data=response_data, status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
-    @validate_cache(key="user:{id }:notes:all")
+    @validate_cache(key="user:{id}:notes:all")
     def update(self, request, pk):
         note = get_object_or_404(Note, pk=pk, user=request.user)
         serializer = NoteUpdateSerializer(note, data=request.data)
