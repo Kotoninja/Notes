@@ -12,5 +12,9 @@ up: ## Up all container
 	docker compose up
 restart: ## Restart all container
 	docker compose restart
+stop: ## Stop all container
+	docker compose stop
 kill: ## Kill postgres port
 	sudo kill -9 $$(sudo lsof -t -i:5432)
+f-bash: ## Open bash in frontend container
+	docker compose exec -it frontend sh
