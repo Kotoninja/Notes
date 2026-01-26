@@ -8,12 +8,10 @@ import ProjectField from '../components/ProjectField';
 import Todo from '../components/Todo';
 
 
-```
-TODO Add individual components for notes in projects.
-TODO Add created time in projectField.
-TODO Project addition system.
-TODO Project note addition system.
-```
+// TODO Add individual components for notes in projects.
+// TODO Add created time in projectField.
+// TODO Project addition system.
+// TODO Project note addition system.
 function Projects() {
     const [projects, setProjects] = useState([]);
     const [notes, setNotes] = useState([]);
