@@ -29,6 +29,7 @@ import ListItem from "@mui/material/ListItem";
 import LogoutIcon from '@mui/icons-material/Logout';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 
+// TODO Links to pages in one list
 const NavBar = () => {
     const [open, setOpen] = useState(false);
     const context = useContext(UserContext);
@@ -136,7 +137,7 @@ const NavBar = () => {
                                     </IconButton>
                                 </Box>
                                 <MenuItem><Button href="/home">Home</Button></MenuItem>
-                                <MenuItem><Button href="/project">Projects</Button></MenuItem>
+                                <MenuItem><Button href="/projects">Projects</Button></MenuItem>
                                 <Divider sx={{ my: 3 }} />
                             </Box>
                         </Drawer>
