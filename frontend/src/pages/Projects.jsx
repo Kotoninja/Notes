@@ -6,16 +6,20 @@ import { useState, useEffect } from 'react';
 import api from '../api';
 import ProjectField from '../components/ProjectField';
 import Todo from '../components/Todo';
-
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 
 // TODO Add individual components for notes in projects.
 // TODO Add created time in projectField.
 // TODO Project addition system.
 // TODO Project note addition system.
+
 function Projects() {
     const [projects, setProjects] = useState([]);
     const [notes, setNotes] = useState([]);
     const [detailPk, setDetailPk] = useState(null);
+    const [loadingNotes, setLoadingNotes] = useState(false);
 
     async function fetchData() {
         api.get("api/project/")
@@ -39,7 +43,7 @@ function Projects() {
         fetchData();
     }, []);
 
-    const notesList = notes.map((note) => ( // TODO stopped here
+    const notesList = notes.map((note) => (
         <Todo
             key={note.id}
             id={note.id}
@@ -49,15 +53,20 @@ function Projects() {
 
     function fetchProjectDetail(id) {
         if (detailPk !== id) {
+            setLoadingNotes(true);
             api.get(`api/project/detail/${id}/`)
                 .then(function (response) {
                     if (response?.data.notes.length) {
                         setNotes(response?.data.notes);
+                        setLoadingNotes(false)
                     } else {
                         setNotes([]);
                     };
                 })
-                .finally(() => { setDetailPk(id) });
+                .finally(() => {
+                    setDetailPk(id)
+                    setLoadingNotes(false)
+                });
         };
     };
 
@@ -71,8 +80,16 @@ function Projects() {
                         {projectsList}
                     </List>
                 </Grid>
-                <Grid sx={{ border: 1, borderRadius: 2, p: 1 }} size={9}>
-                    {notesList}
+                <Grid sx={{ border: 1, borderRadius: 2, p: 1, ...((loadingNotes || !notes.length) && { display: 'flex', justifyContent: "center", alignItems: "center" }) }} size={9}>
+                    {loadingNotes
+                        ?
+                        <CircularProgress />
+                        :
+                        notes.length ?
+                            notesList
+                            :
+                            <Typography color="Grey" variant="h4" sx={{ userSelect: "none" }}>No notes...</Typography>
+                    }
                 </Grid>
             </Grid>
         </Layout>
