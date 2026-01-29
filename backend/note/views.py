@@ -62,7 +62,7 @@ class NoteApi(viewsets.ModelViewSet):
         if cache_data:
             return Response(data=cache_data["data"], status=cache_data["status"])
         else:
-            notes = Note.objects.filter(user=request.user)
+            notes = Note.objects.filter(user=request.user) # TODO Add filter notes without any project
             if notes.exists():
                 serializer = self.get_serializer(notes, many=True)
                 cache.set(
