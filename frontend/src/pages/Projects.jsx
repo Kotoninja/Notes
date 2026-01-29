@@ -86,7 +86,9 @@ function Projects() {
                         <CircularProgress />
                         :
                         notes.length ?
-                            notesList
+                            <Box sx={{ display:"flex",flexDirection:"column", gap:2}}>
+                                {notesList}
+                            </Box>
                             :
                             <Typography color="Grey" variant="h4" sx={{ userSelect: "none" }}>No notes...</Typography>
                     }

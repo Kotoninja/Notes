@@ -5,6 +5,7 @@ import FormControl from '@mui/material/FormControl';
 import Button from '@mui/material/Button';
 import OutlinedInput from '@mui/material/TextField';
 
+
 function NoteForm(props) {
     const [name, setName] = useState("");
     const [loading, setLoading] = useState(false);
