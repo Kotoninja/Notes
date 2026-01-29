@@ -1,0 +1,19 @@
+import React from "react";
+
+export const notesLabel = () => {
+    return (
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 80" width="200" height="80">
+            <defs>
+                <linearGradient id="grad3" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#ffffffff" />
+                    <stop offset="100%" stop-color="#ffffffff" />
+                </linearGradient>
+            </defs>
+            <rect x="10" y="15" width="50" height="50" rx="5" fill="none" stroke="url(#grad3)" stroke-width="3" />
+            <line x1="20" y1="30" x2="40" y2="30" stroke="#ffffffff" stroke-width="4" stroke-linecap="round" />
+            <line x1="20" y1="40" x2="40" y2="40" stroke="#ffffffff" stroke-width="4" stroke-linecap="round" />
+            <line x1="20" y1="50" x2="30" y2="50" stroke="#ffffffff" stroke-width="4" stroke-linecap="round" />
+            <text x="75" y="52" font-family="Arial, sans-serif" font-size="42" font-weight="bold" fill="url(#grad3)">Notes</text>
+        </svg>
+    )
+};
