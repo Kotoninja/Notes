@@ -1,5 +1,4 @@
 // import React from "react";
-// import { BrowserRouter, Routes, Route } from "react-router-dom";
 // import Home from "./pages/Home";
 // import NotFound from "../pages/NotFound";
 // import Login from "./pages/Login";
@@ -9,17 +8,19 @@
 // import Projects from "./pages/Projects";
 
 // function Logout() {
-//   localStorage.clear();
-//   return <Navigate to="/home" />
-// };
+  //   localStorage.clear();
+  //   return <Navigate to="/home" />
+  // };
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import '@/shared/ui/index.css';
 import { UserProvider } from "@/features/auth/ui/";
 import { UserContext } from "@/features/auth/model/";
+import { Layout } from "@/widgets/Layout";
 
 export function Root() {
   return (
     <UserProvider>
-       {/* <BrowserRouter>
+      {/* <BrowserRouter>
          <Routes>
            <Route path="/login/" element={<Login />} />
            <Route path="/logout/" element={<Logout />} />
@@ -31,6 +32,15 @@ export function Root() {
            <Route path="*" element={< NotFound />} />
          </Routes>
        </BrowserRouter> */}
+
+      {/* <BrowserRouter>
+        <Routes>
+          <Route element={Layout}>
+
+          </Route>
+        </Routes>
+      </BrowserRouter> */}
+      <Layout></Layout>
     </UserProvider>
   );
 };

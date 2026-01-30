@@ -1,2 +1,2 @@
-export { notesLabel } from "./notesLabel";
-export { notesSiteIcon } from "./notesSiteIcon";
+export { NotesLabel } from "./NotesLabel";
+export { notesSiteIcon } from "./notesSiteIcon"; // BUG
