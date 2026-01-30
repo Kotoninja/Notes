@@ -13,7 +13,8 @@
 //   return <Navigate to="/home" />
 // };
 import '@/shared/ui/index.css';
-import { UserContext, UserProvider } from "@/app/providers";
+import { UserProvider } from "@/features/auth/ui/";
+import { UserContext } from "@/features/auth/model/";
 
 export function Root() {
   return (

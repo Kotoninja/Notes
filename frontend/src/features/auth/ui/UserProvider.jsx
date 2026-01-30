@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { api } from "@/shared/api";
-import { UserContext } from "./UserContext";
+import { UserContext } from "@/features/auth/model";
 import { ACCESS_TOKEN } from "@/shared/constants";
 
 export const UserProvider = ({ children }) => {
