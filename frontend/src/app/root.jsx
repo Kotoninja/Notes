@@ -13,24 +13,23 @@
 //   return <Navigate to="/home" />
 // };
 import '@/shared/ui/index.css';
+import { UserContext, UserProvider } from "@/app/providers";
 
 export function Root() {
   return (
-    <>Hello World!</>
-    // <UserProvider>
-    //   <BrowserRouter>
-    //     <Routes>
-    //       {/* Auth */}
-    //       <Route path="/login/" element={<Login />} />
-    //       <Route path="/logout/" element={<Logout />} />
-    //       <Route path="/registration/" element={<Registration />} />
+    <UserProvider>
+       {/* <BrowserRouter>
+         <Routes>
+           <Route path="/login/" element={<Login />} />
+           <Route path="/logout/" element={<Logout />} />
+           <Route path="/registration/" element={<Registration />} />
 
-    //       <Route path="/home" element={<Home />} />
-    //       <Route path="/projects" element={<Projects />} />
+           <Route path="/home" element={<Home />} />
+           <Route path="/projects" element={<Projects />} />
 
-    //       <Route path="*" element={< NotFound />} />
-    //     </Routes>
-    //   </BrowserRouter>
-    // </UserProvider>
+           <Route path="*" element={< NotFound />} />
+         </Routes>
+       </BrowserRouter> */}
+    </UserProvider>
   );
 };

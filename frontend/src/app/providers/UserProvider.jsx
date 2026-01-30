@@ -1,8 +1,8 @@
-import { createContext } from "react";
+import React from "react";
 import { useState, useEffect } from "react";
-import api from "../api";
-
-const UserContext = createContext(null);
+import { api } from "@/shared/api";
+import { UserContext } from "./UserContext";
+import { ACCESS_TOKEN } from "@/shared/constants";
 
 export const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null);
@@ -11,7 +11,7 @@ export const UserProvider = ({ children }) => {
 
     const fetchUser = async () => {
         try {
-            const token = localStorage.getItem('access');
+            const token = localStorage.getItem(ACCESS_TOKEN);
             if (!token) {
                 setLoading(false);
                 return;
@@ -25,7 +25,7 @@ export const UserProvider = ({ children }) => {
                 })
                 .catch(function (error) {
                     console.log(error);
-                    setUser({ id: -1, username: "Anonymous" })
+                    setUser({ id: -1, username: "Anonymous" });
                     setIsAuthorized(false);
                 })
                 .finally(function () {
@@ -37,7 +37,7 @@ export const UserProvider = ({ children }) => {
             setIsAuthorized(false);
         } finally {
             // 
-        }
+        };
     };
 
     useEffect(() => {
@@ -51,5 +51,3 @@ export const UserProvider = ({ children }) => {
         </UserContext.Provider>
     );
 };
-
-export default UserContext;

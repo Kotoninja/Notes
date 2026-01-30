@@ -1,2 +1,2 @@
-import { notesLabel } from "./notesLabel";
-import { notesSiteIcon } from "./notesSiteIcon";
+export { notesLabel } from "./notesLabel";
+export { notesSiteIcon } from "./notesSiteIcon";
