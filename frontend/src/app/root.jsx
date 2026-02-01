@@ -11,7 +11,7 @@ import { UserProvider } from "@/features/auth/ui/";
 import { UserContext } from "@/features/auth/model/";
 import { Layout } from "@/widgets/Layout";
 import { Navigate } from "react-router-dom";
-import { LoginPage } from "@/pages/login";
+import { LoginPage, RegistrationPage } from "@/pages/login";
 
 function Logout() {
   localStorage.clear();
@@ -37,8 +37,8 @@ export function Root() {
       <BrowserRouter>
         <Routes>
           <Route path="/login/" element={<LoginPage />} />
+          <Route path="/registration/" element={<RegistrationPage />} />
           <Route path="/logout/" element={<Logout />} />
-
 
           <Route element={<Layout />}>
             <Route path="/home" element={<>Hello</>} />
