@@ -32,6 +32,7 @@ import { useAuth } from "@/features/auth/lib/hooks";
 export const Navbar = () => {
     const [open, setOpen] = useState(false);
     const context = useAuth();
+    console.log(context)
     const [openUser, setOpenUser] = useState(false);
 
     const handleClick = () => {
