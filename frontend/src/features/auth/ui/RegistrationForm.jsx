@@ -11,10 +11,10 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
 export function RegistrationForm() {
-    const { username, setUsername, password, setPassword, email, setEmail, visibility, loading, formError, handleFrom, handleVisibility } = useRegistrationForm()
+    const { username, setUsername, password, setPassword, email, setEmail, visibility, loading, formError, handleForm, handleVisibility } = useRegistrationForm()
 
     return (
-        <form onSubmit={handleFrom} className="form-container">
+        <form onSubmit={handleForm} className="form-container">
             <Box sx={{ display: "flex", justifyContent: "center", }}>
                 <h1>Sign up</h1>
             </Box>

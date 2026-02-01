@@ -10,10 +10,10 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import Box from "@mui/material/Box";
 
 export function LoginForm() {
-    const { username, setUsername, password, setPassword, visibility, loading, formError, handleFrom, handleVisibility } = useLoginForm();
-    
+    const { username, setUsername, password, setPassword, visibility, loading, formError, handleForm, handleVisibility } = useLoginForm();
+
     return (
-        <form onSubmit={handleFrom} className="form-container">
+        <form onSubmit={handleForm} className="form-container">
             <Box sx={{ display: "flex", justifyContent: "center", }}>
                 <h1>Sign in</h1>
             </Box>

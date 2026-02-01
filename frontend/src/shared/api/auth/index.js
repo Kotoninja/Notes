@@ -12,3 +12,15 @@ export async function login(username, password) {
         };
     };
 };
+
+export async function registration(username, password, email) {
+    try {
+        const response = await api.post(AUTH.REGISTRATION, { username, password, email });
+        return response.data;
+    } catch (error) {
+        throw {
+            message: error.response?.data?.username,
+            status: error.response?.status
+        };
+    };
+};
