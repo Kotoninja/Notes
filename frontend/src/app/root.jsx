@@ -3,21 +3,20 @@
 // import Login from "./pages/Login";
 // import Registration from "./pages/Registration";
 // import { UserProvider } from "./context/UserContext";
-// import { Navigate } from "react-router-dom";
 // import Projects from "./pages/Projects";
 
-// function Logout() {
-//   localStorage.clear();
-//   return <Navigate to="/home" />
-// };
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import '@/shared/ui/index.css';
 import { UserProvider } from "@/features/auth/ui/";
 import { UserContext } from "@/features/auth/model/";
 import { Layout } from "@/widgets/Layout";
-// import Login from "../pages/Login";
+import { Navigate } from "react-router-dom";
 import { LoginPage } from "@/pages/login";
 
+function Logout() {
+  localStorage.clear();
+  return <Navigate to="/home" />
+};
 
 export function Root() {
   return (
@@ -38,10 +37,11 @@ export function Root() {
       <BrowserRouter>
         <Routes>
           <Route path="/login/" element={<LoginPage />} />
+          <Route path="/logout/" element={<Logout />} />
 
 
           <Route element={<Layout />}>
-          <Route path="/home" element={<>Hello</>} />
+            <Route path="/home" element={<>Hello</>} />
           </Route>
         </Routes>
       </BrowserRouter>
