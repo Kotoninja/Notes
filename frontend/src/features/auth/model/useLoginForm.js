@@ -2,8 +2,8 @@ import React from "react";
 import { useState, useContext } from "react";
 import { UserContext } from "./UserContext";
 import { useNavigate } from "react-router-dom";
-import { api } from "@/shared/api";
 import { ACCESS_TOKEN, REFRESH_TOKEN } from "@/shared/constants";
+import { login } from "@/shared/api/auth";
 
 export function useLoginForm() {
     const [username, setUsername] = useState("");
@@ -19,14 +19,13 @@ export function useLoginForm() {
         if (password && username) {
             setLoading(true);
             try {
-                await api.post("api/token/", { username, password })
-                    .then(function (response) {
-                        localStorage.setItem(ACCESS_TOKEN, response.data.access);
-                        localStorage.setItem(REFRESH_TOKEN, response.data.refresh);
-                        context?.fetchUser();
-                        navigate("/home");
-                    });
+                const responseData = await login(username, password)
+                localStorage.setItem(ACCESS_TOKEN, responseData.access);
+                localStorage.setItem(REFRESH_TOKEN, responseData.refresh);
+                context?.fetchUser();
+                navigate("/home");
             } catch (error) {
+                console.log(error)
                 setFormError(true);
             } finally {
                 setLoading(false);
