@@ -31,7 +31,7 @@ class NoteCreateSerializer(serializers.ModelSerializer):
 class NoteUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Note
-        fields = ["title", "description", "completed", "publication_date"]
+        fields = ["title", "description", "completed", "end_date"]
 
     def update(self, instance, validated_data):
         instance.title = validated_data.get("title", instance.title)
