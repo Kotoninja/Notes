@@ -1,17 +1,10 @@
-// import React from "react";
-// import NotFound from "../pages/NotFound";
-// import Login from "./pages/Login";
-// import Registration from "./pages/Registration";
-// import { UserProvider } from "./context/UserContext";
-// import Projects from "./pages/Projects";
-
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import '@/shared/ui/index.css';
 import { UserProvider } from "@/features/auth/ui/";
-import { UserContext } from "@/features/auth/model/";
 import { Layout } from "@/widgets/Layout";
 import { Navigate } from "react-router-dom";
 import { LoginPage, RegistrationPage } from "@/pages/login";
+import { NotePage } from "@/pages/note";
 
 function Logout() {
   localStorage.clear();
@@ -41,7 +34,7 @@ export function Root() {
           <Route path="/logout/" element={<Logout />} />
 
           <Route element={<Layout />}>
-            <Route path="/home" element={<>Hello</>} />
+            <Route path="/home" element={<NotePage />} />
           </Route>
         </Routes>
       </BrowserRouter>

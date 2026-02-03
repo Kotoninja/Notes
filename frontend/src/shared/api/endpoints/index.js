@@ -6,6 +6,6 @@ export const AUTH = {
 export const NOTE = {
     ALL: "api/note/all/",
     CREATE: "api/note/create/",
-    DELETE: (id) => { `api/note/delete/${id}/` },
-    UPDATE: (id) => { `api/note/update/${id}/` }
+    DELETE: (id) => `api/note/delete/${id}/`,
+    UPDATE: (id) => `api/note/update/${id}/`
 };

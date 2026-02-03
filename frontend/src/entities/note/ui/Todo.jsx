@@ -1,22 +1,22 @@
-import React, { useEffect } from 'react';
-import Box from '@mui/material/Box';
-import { useState } from 'react';
-import FormControl from '@mui/material/FormControl';
-import Checkbox from '@mui/material/Checkbox';
-import Input from '@mui/material/Input';
-import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import CloseIcon from '@mui/icons-material/Close';
-import IconButton from '@mui/material/IconButton';
-import Chip from '@mui/material/Chip';
-import AccessTimeIcon from '@mui/icons-material/AccessTime';
-import AlarmAddIcon from '@mui/icons-material/AlarmAdd';
-import DeleteIcon from '@mui/icons-material/Delete';
+import React, { useEffect } from "react";
+import Box from "@mui/material/Box";
+import { useState } from "react";
+import FormControl from "@mui/material/FormControl";
+import Checkbox from "@mui/material/Checkbox";
+import Input from "@mui/material/Input";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import CloseIcon from "@mui/icons-material/Close";
+import IconButton from "@mui/material/IconButton";
+import Chip from "@mui/material/Chip";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import AlarmAddIcon from "@mui/icons-material/AlarmAdd";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 export function Todo(props) {
     const [isEditing, setIsEditing] = useState(false);
     const [newName, setNewName] = useState(props.title);
-    const defaultEndDate = handlerDate(props.date)
+    const defaultEndDate = handlerDate(props.end_date);
     const [date, setDate] = useState(defaultEndDate);
 
     function handlerDate(end_date) {
@@ -34,7 +34,7 @@ export function Todo(props) {
             setIsEditing(false);
         };
         if (date !== defaultEndDate) {
-            props.editDate(props.id, props.title, date || null);
+            props.editDate(props.id, date || null);
         };
         setIsEditing(false);
     };
@@ -56,7 +56,7 @@ export function Todo(props) {
     const viewTemplate = <>
         <Box sx={{ display: "flex", flexDirection: "column" }} onDoubleClick={() => setIsEditing(!isEditing)}>
             <Box sx={{ display: "flex" }}>
-                <Checkbox checked={props.completed} onChange={() => props.toggleTaskCompleted(props.id, props.title, props.completed)} />
+                <Checkbox checked={props.completed} onChange={() => props.toggleTaskCompleted(props.id, props.completed)} />
                 <Typography sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
                     {props.title}
                 </Typography>
@@ -69,7 +69,7 @@ export function Todo(props) {
         <form onSubmit={handleEditTask} >
             <FormControl sx={{ display: "flex" }}>
                 <Box sx={{ display: "flex" }}>
-                    <Checkbox checked={props.completed} onChange={() => props.toggleTaskCompleted(props.id, props.title, props.completed)} />
+                    <Checkbox checked={props.completed} onChange={() => props.toggleTaskCompleted(props.id, props.completed)} />
                     <Input sx={{ width: "100%" }} type="text" value={newName} onChange={(e) => setNewName(e.target.value)} />
                     <IconButton onClick={() => setIsEditing(!isEditing)}><CloseIcon /></IconButton>
                 </Box>
@@ -96,7 +96,7 @@ export function Todo(props) {
                 p: 0.5,
                 borderRadius: 3,
                 borderColor: "rgba(189, 189, 189, 0.5)",
-                cursor: isEditing ? 'default' : 'pointer',
+                cursor: isEditing ? "default" : "pointer",
                 userSelect: isEditing ? "auto" : "none"
             }}>
             {isEditing ? changeTemplate : viewTemplate}

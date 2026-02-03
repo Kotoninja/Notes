@@ -1,20 +1,20 @@
-import React from 'react';
-import { Todo } from '@/entities/note/ui/Todo';
-import { noteUpdate, noteDelete } from "@/entities/note/api";
+import React from "react";
+import { Todo } from "@/entities/note/ui/Todo";
+import { noteAPI } from "@/entities/note/api";
 
-export function TodoBlock({ props }) {
+export function TodoBlock(props) {
     function deleteTask(id) {
         try {
-            noteDelete(id)
-            props.setTasks(props.tasks.filter((task) => task.id != id))
+            noteAPI.delete(id);
+            props.setTasks(props.tasks.filter((task) => task.id != id));
         } catch (error) {
             console.error(error);
         }
     };
 
-    function toggleTaskCompleted(id, taskCompleted) {
+    async function toggleTaskCompleted(id, taskCompleted) {
         try {
-            noteUpdate(id, { completed: !taskCompleted })
+            await noteAPI.update(id, { completed: !taskCompleted });
             const updatedTasks = props.tasks.map((task) => {
                 if (id === task.id) {
                     return { ...task, completed: !taskCompleted };
@@ -26,10 +26,10 @@ export function TodoBlock({ props }) {
             console.error(error);
         }
     };
- 
+
     function editTask(id, newName) {
         try {
-            noteUpdate(id, { title: newName })
+            noteAPI.update(id, { title: newName });
             const editedTaskList = props.tasks.map((task) => {
                 if (id === task.id) {
                     return { ...task, title: newName };
@@ -42,9 +42,9 @@ export function TodoBlock({ props }) {
         }
     };
 
-    function editDate(id, taskTitle, taskEndDate) {
+    function editDate(id, taskEndDate) {
         try {
-            noteUpdate(id, { end_date: taskEndDate })
+            noteAPI.update(id, { end_date: taskEndDate });
             const editedTaskList = props.tasks.map((task) => {
                 if (id === task.id) {
                     return { ...task, end_date: taskEndDate };
@@ -53,9 +53,10 @@ export function TodoBlock({ props }) {
             });
             props.setTasks(editedTaskList);
         } catch (error) {
-            console.error(error)
+            console.error(error);
         }
     };
+
     return (
         <Todo
             id={props.id}
