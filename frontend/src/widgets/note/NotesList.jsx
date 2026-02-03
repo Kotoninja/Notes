@@ -2,7 +2,7 @@ import React from "react"
 import { useState, useEffect } from "react";
 import { noteAPI } from "@/entities/note/api";
 import Box from "@mui/material/Box";
-import { TodoBlock } from "./TodoBlock";
+import { TodoBlock } from "@/features/note/ui";
 
 export function NotesList() {
     const [tasks, setTasks] = useState([]);

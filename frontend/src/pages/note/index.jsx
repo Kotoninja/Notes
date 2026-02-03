@@ -1,6 +1,6 @@
 import React from "react"
 import Box from "@mui/material/Box";
-import { NotesList } from "@/features/note/ui/NotesList";
+import { NotesList } from "@/widgets/note/NotesList";
 
 export function NotePage() {
     return (
