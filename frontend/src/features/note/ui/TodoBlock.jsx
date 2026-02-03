@@ -1,5 +1,5 @@
 import React from "react";
-import { Todo } from "@/entities/note/ui/Todo";
+import { Todo } from "./Todo";
 import { noteAPI } from "@/entities/note/api";
 
 export function TodoBlock(props) {
