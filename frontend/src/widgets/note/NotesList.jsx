@@ -4,24 +4,9 @@ import { noteAPI } from "@/entities/note/api";
 import Box from "@mui/material/Box";
 import { TodoBlock } from "@/features/note/ui";
 
-export function NotesList() {
-    const [tasks, setTasks] = useState([]);
-    // const [filter, setFilter] = useState("All");
-    // const context = useContext(UserContext);
+export function NotesList(props) {
 
-    useEffect(() => {
-        async function fetchData() {
-            try {
-                const response = await noteAPI.getALL();
-                setTasks(response || []);
-            } catch (error) {
-                console.error(error)
-            };
-        };
-        fetchData()
-    }, [])
-
-    const taskList = tasks.map((task) =>
+    const taskList = props.tasks.map((task) =>
     (<TodoBlock
         id={task.id}
         title={task.title}
