@@ -11,8 +11,11 @@ import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import api from '../../api';
+// TODO add color selection and description
+// TODO loading
 
-export function ProjectDialog() {
+export function ProjectDialog({ addProject }) {
     const [open, setOpen] = useState(false);
     const [newProjectName, setNewProjectName] = useState("")
     const [error, setError] = useState(false)
@@ -28,10 +31,16 @@ export function ProjectDialog() {
     function handleForm(e) {
         e.preventDefault();
         if (newProjectName) {
-            console.log(newProjectName);
-            setNewProjectName("")
+            api.post("api/project/create/", { name: newProjectName })
+                .then(function (response) {
+                    addProject(response?.data?.id, response?.data?.name, response?.data?.color);
+                })
+                .finally(() => {
+                    setNewProjectName("")
+                    handleClose()
+                });
         } else {
-            setError(true)
+            setError(true);
         }
     }
 
