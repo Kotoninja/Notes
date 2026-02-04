@@ -10,7 +10,6 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
-// TODO Add individual components for notes in projects.
 // TODO Add created time in projectField.
 // TODO Project addition system.
 // TODO Project note addition system.
@@ -86,7 +85,7 @@ function Projects() {
                         <CircularProgress />
                         :
                         notes.length ?
-                            <Box sx={{ display:"flex",flexDirection:"column", gap:2}}>
+                            <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
                                 {notesList}
                             </Box>
                             :
