@@ -13,8 +13,8 @@ import { ProjectDialog } from '../components/projects/ProjectDialog';
 
 
 // TODO Add created time in projectField.
-// TODO Project addition system.
 // TODO Project note addition system.
+// TODO Add delete project
 
 function Projects() {
     const [projects, setProjects] = useState([]);
@@ -71,6 +71,11 @@ function Projects() {
         };
     };
 
+    function addProject(id, name, color) {
+        const newProject = { id: id, name: name, color: color }
+        setProjects([...projects, newProject])
+    }
+
     return (
         <Layout sx={{ display: "flex" }}>
             <title>Projects</title>
@@ -80,7 +85,7 @@ function Projects() {
                         <Typography>
                             Projects
                         </Typography>
-                        <ProjectDialog/>
+                        <ProjectDialog addProject={addProject} />
                     </Box>
                     <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
                         {projectsList}
