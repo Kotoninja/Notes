@@ -32,7 +32,7 @@ function Todo(props) {
             setIsEditing(false);
         };
         if (date !== defaultEndDate) {
-            props.editDate(props.id, props.title, date || null);
+            props.editDate(props.id, date || null);
         };
         setIsEditing(false);
     };
@@ -54,7 +54,7 @@ function Todo(props) {
     const viewTemplate = <>
         <Box sx={{ display: "flex", flexDirection: "column" }} onDoubleClick={() => setIsEditing(!isEditing)}>
             <Box sx={{ display: "flex" }}>
-                <Checkbox checked={props.completed} onChange={() => props.toggleTaskCompleted(props.id, props.title, props.completed)} />
+                <Checkbox checked={props.completed} onChange={() => props.toggleTaskCompleted(props.id, props.completed)} />
                 <Typography sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
                     {props.title}
                 </Typography>
@@ -67,7 +67,7 @@ function Todo(props) {
         <form onSubmit={handleEditTask} >
             <FormControl sx={{ display: "flex" }}>
                 <Box sx={{ display: "flex" }}>
-                    <Checkbox checked={props.completed} onChange={() => props.toggleTaskCompleted(props.id, props.title, props.completed)} />
+                    <Checkbox checked={props.completed} onChange={() => props.toggleTaskCompleted(props.id, props.completed)} />
                     <Input sx={{ width: "100%" }} type="text" value={newName} onChange={(e) => setNewName(e.target.value)} />
                     <IconButton onClick={() => setIsEditing(!isEditing)}><CloseIcon /></IconButton>
                 </Box>
