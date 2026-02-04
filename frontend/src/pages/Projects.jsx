@@ -9,6 +9,7 @@ import Todo from '../components/Todo';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import {TodoBlock} from "../components/TodoBlock";
 
 // TODO Add created time in projectField.
 // TODO Project addition system.
@@ -16,18 +17,9 @@ import Typography from '@mui/material/Typography';
 
 function Projects() {
     const [projects, setProjects] = useState([]);
-    const [notes, setNotes] = useState([]);
+    const [tasks, setTasks] = useState([]);
     const [detailPk, setDetailPk] = useState(null);
     const [loadingNotes, setLoadingNotes] = useState(false);
-
-    async function fetchData() {
-        api.get("api/project/")
-            .then(function (response) {
-                if (response?.data) {
-                    setProjects(response?.data);
-                };
-            });
-    };
 
     const projectsList = projects.map((project) =>
     (<ProjectField
@@ -39,14 +31,23 @@ function Projects() {
     />));
 
     useEffect(() => {
+        async function fetchData() {
+            api.get("api/project/")
+                .then(function (response) {
+                    if (response?.data) {
+                        setProjects(response?.data);
+                    };
+                });
+        };
         fetchData();
     }, []);
 
-    const notesList = notes.map((note) => (
-        <Todo
-            key={note.id}
-            id={note.id}
-            title={note.title}
+    const notesList = tasks.map((task) => (
+        <TodoBlock
+            key={task.id}
+            task={task}
+            tasks={tasks}
+            setTasks={setTasks}
         />
     ));
 
@@ -56,10 +57,10 @@ function Projects() {
             api.get(`api/project/detail/${id}/`)
                 .then(function (response) {
                     if (response?.data.notes.length) {
-                        setNotes(response?.data.notes);
+                        setTasks(response?.data.notes);
                         setLoadingNotes(false)
                     } else {
-                        setNotes([]);
+                        setTasks([]);
                     };
                 })
                 .finally(() => {
@@ -79,12 +80,12 @@ function Projects() {
                         {projectsList}
                     </List>
                 </Grid>
-                <Grid sx={{ border: 1, borderRadius: 2, p: 1, ...((loadingNotes || !notes.length) && { display: 'flex', justifyContent: "center", alignItems: "center" }) }} size={9}>
+                <Grid sx={{ border: 1, borderRadius: 2, p: 1, ...((loadingNotes || !tasks.length) && { display: 'flex', justifyContent: "center", alignItems: "center" }) }} size={9}>
                     {loadingNotes
                         ?
                         <CircularProgress />
                         :
-                        notes.length ?
+                        tasks.length ?
                             <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
                                 {notesList}
                             </Box>
