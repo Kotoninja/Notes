@@ -4,12 +4,13 @@ import List from '@mui/material/List';
 import Grid from '@mui/material/Grid';
 import { useState, useEffect } from 'react';
 import api from '../api';
-import ProjectField from '../components/ProjectField';
-import Todo from '../components/Todo';
+import ProjectField from '../components/projects/ProjectField';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import {TodoBlock} from "../components/TodoBlock";
+import { TodoBlock } from "../components/TodoBlock";
+import { ProjectDialog } from '../components/projects/ProjectDialog';
+
 
 // TODO Add created time in projectField.
 // TODO Project addition system.
@@ -75,7 +76,12 @@ function Projects() {
             <title>Projects</title>
             <Grid container spacing={1}>
                 <Grid sx={{ border: 1, borderRadius: 2, p: 1 }} size={3}>
-                    Projects
+                    <Box sx={{ display: "flex", alignItems: "center" }}>
+                        <Typography>
+                            Projects
+                        </Typography>
+                        <ProjectDialog/>
+                    </Box>
                     <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
                         {projectsList}
                     </List>
