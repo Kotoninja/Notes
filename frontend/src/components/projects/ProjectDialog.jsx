@@ -13,12 +13,12 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import api from '../../api';
 // TODO add color selection and description
-// TODO loading
 
 export function ProjectDialog({ addProject }) {
     const [open, setOpen] = useState(false);
-    const [newProjectName, setNewProjectName] = useState("")
-    const [error, setError] = useState(false)
+    const [newProjectName, setNewProjectName] = useState("");
+    const [error, setError] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -30,14 +30,16 @@ export function ProjectDialog({ addProject }) {
 
     function handleForm(e) {
         e.preventDefault();
+        setLoading(true);
         if (newProjectName) {
             api.post("api/project/create/", { name: newProjectName })
                 .then(function (response) {
                     addProject(response?.data?.id, response?.data?.name, response?.data?.color);
                 })
                 .finally(() => {
-                    setNewProjectName("")
-                    handleClose()
+                    setNewProjectName("");
+                    setLoading(false);
+                    handleClose();
                 });
         } else {
             setError(true);
@@ -81,11 +83,11 @@ export function ProjectDialog({ addProject }) {
                                     onChange={(e) => setNewProjectName(e.target.value)}
                                     onClick={() => setError(false)} />
                             </FormControl>
-                            <Button sx={{ width: "100%", mt: 3 }} variant="contained" type="submit">Create</Button>
+                            <Button loading={loading} sx={{ width: "100%", mt: 3 }} variant="contained" type="submit">Create</Button>
                         </form>
                     </DialogContent>
                 </Box>
             </Dialog >
         </>
     )
-}
+};
