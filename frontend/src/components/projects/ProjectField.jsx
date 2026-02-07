@@ -4,18 +4,17 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Typography from '@mui/material/Typography';
-import ListItemButton from '@mui/material/ListItemButton';
-import Tooltip from '@mui/material/Tooltip';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { ProjectFieldListSettings } from './ProjectFieldListSettings';
-
+import { ProjectEditDialog } from './ProjectEditDialog';
 
 function ProjectField(props) {
   const [isHovered, setIsHovered] = useState(false)
   const [isProjectListSettingsOpen, setIsProjectListSettingsOpen] = useState(false)
   const [anchorEl, setAnchorEl] = useState(null);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
   const viewTemplate = <>
     <ListItemAvatar sx={{
@@ -32,6 +31,7 @@ function ProjectField(props) {
     </ListItemAvatar>
     <ListItemText primary={<Typography noWrap>{props.name}</Typography>} secondary="Jan 9, 2014" />
   </>
+
 
 
   const infoTemplate = (
@@ -75,7 +75,14 @@ function ProjectField(props) {
       >
         <MoreVertIcon />
       </IconButton>
-      {isProjectListSettingsOpen && <ProjectFieldListSettings anchorEl={anchorEl} id={props.id}/>}
+      {isProjectListSettingsOpen
+        &&
+        <ProjectFieldListSettings
+          anchorEl={anchorEl}
+          id={props.id}
+          onEditClick={() => setIsEditDialogOpen(true)}
+          deleteProject={props.deleteProject}
+        />}
     </Box>
   );
 
@@ -88,7 +95,6 @@ function ProjectField(props) {
       const clickedInsideMain = mainElement && mainElement.contains(e.target);
       const clickedInsidePopper = popperElement && popperElement.contains(e.target);
 
-      console.log(!clickedInsideMain && !clickedInsidePopper)
       if (!clickedInsideMain && !clickedInsidePopper) {
         setIsProjectListSettingsOpen(false);
         setIsHovered(false)
@@ -126,11 +132,19 @@ function ProjectField(props) {
   }, [props.id, isProjectListSettingsOpen]);
 
   return (
-    <ListItem id={props.id} key={props.id}>
-      <ListItemButton sx={{ borderRadius: 4 }} >
+    <>
+      <ListItem sx={{ borderRadius: 4 }} id={props.id} key={props.id} >
         {isHovered ? infoTemplate : viewTemplate}
-      </ListItemButton>
-    </ListItem>
+      </ListItem>
+      <ProjectEditDialog
+        open={isEditDialogOpen}
+        onClose={() => setIsEditDialogOpen(false)}
+        id={props.id}
+        name={props.name}
+        editProject={props.editProject}
+      />
+    </>
+
   );
 };
 
