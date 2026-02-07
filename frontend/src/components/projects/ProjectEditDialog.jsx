@@ -1,14 +1,14 @@
-import { React, useState } from 'react'
-import Dialog from '@mui/material/Dialog';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
-import FormControl from '@mui/material/FormControl';
-import TextField from '@mui/material/TextField';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import api from '../../api'
+import { React, useState } from "react"
+import Dialog from "@mui/material/Dialog";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
+import FormControl from "@mui/material/FormControl";
+import TextField from "@mui/material/TextField";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import api from "../../api"
 
 
 export function ProjectEditDialog(props) {
@@ -27,7 +27,7 @@ export function ProjectEditDialog(props) {
                 .finally(() => {
                     setNewProjectName(props.name);
                     setLoading(false);
-                    props.onClose()
+                    props.onClose();
                 });
         } else {
             setError(true);
@@ -48,7 +48,7 @@ export function ProjectEditDialog(props) {
                     aria-label="close"
                     onClick={() => { props.onClose(!open) }}
                     sx={(theme) => ({
-                        position: 'absolute',
+                        position: "absolute",
                         right: 8,
                         top: 8,
                         color: theme.palette.grey[500],
@@ -71,5 +71,5 @@ export function ProjectEditDialog(props) {
                 </DialogContent>
             </Box>
         </Dialog >
-    )
-}
+    );
+};

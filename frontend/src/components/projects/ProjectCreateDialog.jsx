@@ -1,17 +1,17 @@
-import { React, useState } from 'react'
-import Dialog from '@mui/material/Dialog';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
-import IconButton from '@mui/material/IconButton';
-import Tooltip from '@mui/material/Tooltip';
-import CloseIcon from '@mui/icons-material/Close';
-import FormControl from '@mui/material/FormControl';
-import TextField from '@mui/material/TextField';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import api from '../../api';
+import { React, useState } from "react"
+import Dialog from "@mui/material/Dialog";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
+import CloseIcon from "@mui/icons-material/Close";
+import FormControl from "@mui/material/FormControl";
+import TextField from "@mui/material/TextField";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import api from "../../api";
 // TODO add color selection and description
 
 export function ProjectCreateDialog({ addProject }) {
@@ -66,7 +66,7 @@ export function ProjectCreateDialog({ addProject }) {
                         aria-label="close"
                         onClick={handleClose}
                         sx={(theme) => ({
-                            position: 'absolute',
+                            position: "absolute",
                             right: 8,
                             top: 8,
                             color: theme.palette.grey[500],
@@ -90,5 +90,5 @@ export function ProjectCreateDialog({ addProject }) {
                 </Box>
             </Dialog >
         </>
-    )
+    );
 };
