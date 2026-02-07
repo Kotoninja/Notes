@@ -9,10 +9,14 @@ import Tooltip from '@mui/material/Tooltip';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { ProjectFieldListSettings } from './ProjectFieldListSettings';
+
 
 function ProjectField(props) {
   const [isHovered, setIsHovered] = useState(false)
-  // console.
+  const [isProjectListSettingsOpen, setIsProjectListSettingsOpen] = useState(false)
+  const [anchorEl, setAnchorEl] = useState(null);
+
   const viewTemplate = <>
     <ListItemAvatar sx={{
       display: "flex",
@@ -31,7 +35,7 @@ function ProjectField(props) {
 
 
   const infoTemplate = (
-    <Box display="flex" alignItems="center" width="100%">
+    <Box display="flex" alignItems="center" width="100%" id={props.id}>
       <Box
         display="flex"
         alignItems="center"
@@ -66,42 +70,66 @@ function ProjectField(props) {
           />
         </Box>
       </Box>
-      <IconButton
-        sx={{ flexShrink: 0, zIndex: 1500 }}
+      <IconButton onClick={(e) => { setIsProjectListSettingsOpen(!isProjectListSettingsOpen), setAnchorEl(e.currentTarget); }}
+        sx={{ flexShrink: 0 }}
       >
         <MoreVertIcon />
       </IconButton>
+      {isProjectListSettingsOpen && <ProjectFieldListSettings anchorEl={anchorEl} id={props.id}/>}
     </Box>
   );
 
   useEffect(() => {
-    const handleViewTrue = (e) => {
-      if (e.target.id == props.id) {
-        setIsHovered(true);
-      }
-    }
+    const handleClickOutside = (e) => {
+      const mainElement = document.getElementById(props.id);
+      const popperId = `popper-${props.id}`;
+      const popperElement = document.getElementById(popperId);
 
-    const handleViewFalse = (e) => {
-      if (e.target.id == props.id) {
+      const clickedInsideMain = mainElement && mainElement.contains(e.target);
+      const clickedInsidePopper = popperElement && popperElement.contains(e.target);
+
+      console.log(!clickedInsideMain && !clickedInsidePopper)
+      if (!clickedInsideMain && !clickedInsidePopper) {
+        setIsProjectListSettingsOpen(false);
+        setIsHovered(false)
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [props.id]);
+
+  useEffect(() => {
+    const handleMouseEnter = () => {
+      setIsHovered(true);
+    };
+
+    const handleMouseLeave = () => {
+      if (!isProjectListSettingsOpen) {
         setIsHovered(false);
       }
-    }
-    document.addEventListener("mouseenter", handleViewTrue, true)
-    document.addEventListener("mouseleave", handleViewFalse, true)
-    return () => {
-      document.removeEventListener("mouseenter", handleViewTrue, true);
-      document.removeEventListener("mouseleave", handleViewFalse, true);
     };
-  }, [])
 
+    const element = document.getElementById(props.id);
+    if (element) {
+      element.addEventListener('mouseenter', handleMouseEnter);
+      element.addEventListener('mouseleave', handleMouseLeave);
+
+      return () => {
+        element.removeEventListener('mouseenter', handleMouseEnter);
+        element.removeEventListener('mouseleave', handleMouseLeave);
+      };
+    }
+  }, [props.id, isProjectListSettingsOpen]);
 
   return (
     <ListItem id={props.id} key={props.id}>
-      <Tooltip title={props.name}>
-        <ListItemButton sx={{ borderRadius: 4 }} >
-          {isHovered ? infoTemplate : viewTemplate}
-        </ListItemButton>
-      </Tooltip>
+      <ListItemButton sx={{ borderRadius: 4 }} >
+        {isHovered ? infoTemplate : viewTemplate}
+      </ListItemButton>
     </ListItem>
   );
 };

@@ -76,6 +76,7 @@ function Projects() {
         setProjects([...projects, newProject])
     }
 
+
     return (
         <Layout sx={{ display: "flex" }}>
             <title>Projects</title>
