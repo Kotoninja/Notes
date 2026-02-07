@@ -31,6 +31,7 @@ export function ProjectEditDialog(props) {
                 });
         } else {
             setError(true);
+            setLoading(false);
         }
     }
 
