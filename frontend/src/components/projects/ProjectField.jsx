@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import WorkIcon from '@mui/icons-material/Work';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { ProjectFieldListSettings } from './ProjectFieldListSettings';
-import { ProjectEditDialog } from './ProjectEditDialog';
+import React, { useEffect, useState } from "react";
+import WorkIcon from "@mui/icons-material/Work";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
+import ListItemAvatar from "@mui/material/ListItemAvatar";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import IconButton from "@mui/material/IconButton";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { ProjectFieldListSettings } from "./ProjectFieldListSettings";
+import { ProjectEditDialog } from "./ProjectEditDialog";
 
 function ProjectField(props) {
-  const [isHovered, setIsHovered] = useState(false)
-  const [isProjectListSettingsOpen, setIsProjectListSettingsOpen] = useState(false)
+  const [isHovered, setIsHovered] = useState(false);
+  const [isProjectListSettingsOpen, setIsProjectListSettingsOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
@@ -41,7 +41,7 @@ function ProjectField(props) {
         alignItems="center"
         flex={1}
         minWidth={0}
-        sx={{ cursor: 'pointer' }}
+        sx={{ cursor: "pointer" }}
         onClick={() => { props.fetchProjectDetail(props.id) }}
       >
         <Box
@@ -101,10 +101,10 @@ function ProjectField(props) {
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [props.id]);
 
@@ -121,12 +121,12 @@ function ProjectField(props) {
 
     const element = document.getElementById(props.id);
     if (element) {
-      element.addEventListener('mouseenter', handleMouseEnter);
-      element.addEventListener('mouseleave', handleMouseLeave);
+      element.addEventListener("mouseenter", handleMouseEnter);
+      element.addEventListener("mouseleave", handleMouseLeave);
 
       return () => {
-        element.removeEventListener('mouseenter', handleMouseEnter);
-        element.removeEventListener('mouseleave', handleMouseLeave);
+        element.removeEventListener("mouseenter", handleMouseEnter);
+        element.removeEventListener("mouseleave", handleMouseLeave);
       };
     }
   }, [props.id, isProjectListSettingsOpen]);

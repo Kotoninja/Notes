@@ -1,15 +1,15 @@
-import React from 'react';
-import Layout from '../components/Layout';
-import List from '@mui/material/List';
-import Grid from '@mui/material/Grid';
-import { useState, useEffect } from 'react';
-import api from '../api';
-import ProjectField from '../components/projects/ProjectField';
-import CircularProgress from '@mui/material/CircularProgress';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
+import React from "react";
+import Layout from "../components/Layout";
+import List from "@mui/material/List";
+import Grid from "@mui/material/Grid";
+import { useState, useEffect } from "react";
+import api from "../api";
+import ProjectField from "../components/projects/ProjectField";
+import CircularProgress from "@mui/material/CircularProgress";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 import { TodoBlock } from "../components/TodoBlock";
-import { ProjectCreateDialog } from '../components/projects/ProjectCreateDialog';
+import { ProjectCreateDialog } from "../components/projects/ProjectCreateDialog";
 
 
 // TODO Add created time in projectField.
@@ -60,29 +60,29 @@ function Projects() {
                 .then(function (response) {
                     if (response?.data.notes.length) {
                         setTasks(response?.data.notes);
-                        setLoadingNotes(false)
+                        setLoadingNotes(false);
                     } else {
                         setTasks([]);
                     };
                 })
                 .finally(() => {
-                    setDetailPk(id)
-                    setLoadingNotes(false)
+                    setDetailPk(id);
+                    setLoadingNotes(false);
                 });
         };
     };
 
     function addProject(id, name, color) {
-        const newProject = { id: id, name: name, color: color }
-        setProjects([...projects, newProject])
-    }
+        const newProject = { id: id, name: name, color: color };
+        setProjects([...projects, newProject]);
+    };
 
     function deleteProject(id) {
         api.delete(`api/project/delete/${id}/`)
             .then(
                 setProjects(projects.filter((project) => project.id != id))
-            );
-    }
+            )
+    };
 
     function editProject(id, newName) {
         api.put(`api/project/partial_update/${id}/`, { name: newName })
@@ -109,11 +109,11 @@ function Projects() {
                         </Typography>
                         <ProjectCreateDialog addProject={addProject} />
                     </Box>
-                    <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+                    <List sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}>
                         {projectsList}
                     </List>
                 </Grid>
-                <Grid sx={{ border: 1, borderRadius: 2, p: 1, ...((loadingNotes || !tasks.length) && { display: 'flex', justifyContent: "center", alignItems: "center" }) }} size={9}>
+                <Grid sx={{ border: 1, borderRadius: 2, p: 1, ...((loadingNotes || !tasks.length) && { display: "flex", justifyContent: "center", alignItems: "center" }) }} size={9}>
                     {loadingNotes
                         ?
                         <CircularProgress />
