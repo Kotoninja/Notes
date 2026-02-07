@@ -14,7 +14,7 @@ import Button from '@mui/material/Button';
 import api from '../../api';
 // TODO add color selection and description
 
-export function ProjectDialog({ addProject }) {
+export function ProjectCreateDialog({ addProject }) {
     const [open, setOpen] = useState(false);
     const [newProjectName, setNewProjectName] = useState("");
     const [error, setError] = useState(false);

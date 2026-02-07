@@ -9,12 +9,11 @@ import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { TodoBlock } from "../components/TodoBlock";
-import { ProjectDialog } from '../components/projects/ProjectDialog';
+import { ProjectCreateDialog } from '../components/projects/ProjectCreateDialog';
 
 
 // TODO Add created time in projectField.
 // TODO Project note addition system.
-// TODO Add delete project
 
 function Projects() {
     const [projects, setProjects] = useState([]);
@@ -29,6 +28,8 @@ function Projects() {
         color={project.color}
         key={project.id}
         fetchProjectDetail={fetchProjectDetail}
+        deleteProject={deleteProject}
+        editProject={editProject}
     />));
 
     useEffect(() => {
@@ -76,6 +77,26 @@ function Projects() {
         setProjects([...projects, newProject])
     }
 
+    function deleteProject(id) {
+        api.delete(`api/project/delete/${id}/`)
+            .then(
+                setProjects(projects.filter((project) => project.id != id))
+            );
+    }
+
+    function editProject(id, newName) {
+        api.put(`api/project/partial_update/${id}/`, { name: newName })
+            .then(() => {
+                const editedTaskList = projects.map((project) => {
+                    if (id === project.id) {
+                        return { ...project, name: newName };
+                    };
+                    return project;
+                });
+                setProjects(editedTaskList);
+            }
+            );
+    }
 
     return (
         <Layout sx={{ display: "flex" }}>
@@ -86,7 +107,7 @@ function Projects() {
                         <Typography>
                             Projects
                         </Typography>
-                        <ProjectDialog addProject={addProject} />
+                        <ProjectCreateDialog addProject={addProject} />
                     </Box>
                     <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
                         {projectsList}
