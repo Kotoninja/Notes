@@ -60,7 +60,7 @@ function Home() {
             {
                 context?.isAuthorized &&
                 <>
-                    <NoteForm addTask={addTask} />
+                    <NoteForm addTask={addTask}/>
                     <Box sx={{ display: "flex", gap: 5, justifyContent: "center" }}>
                         {filterList}
                     </Box>
