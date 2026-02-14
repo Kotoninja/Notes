@@ -12,7 +12,6 @@ import { TodoBlock } from "../components/TodoBlock";
 import { ProjectCreateDialog } from "../components/projects/ProjectCreateDialog";
 import NoteForm from "../components/NoteForm";
 
-// TODO Add created time in projectField.
 
 function Projects() {
     const [projects, setProjects] = useState([]);
@@ -25,6 +24,7 @@ function Projects() {
         id={project.id}
         name={project.name}
         color={project.color}
+        created={project.created}
         key={project.id}
         fetchProjectDetail={fetchProjectDetail}
         deleteProject={deleteProject}

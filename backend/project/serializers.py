@@ -6,7 +6,7 @@ from note.serializers import NoteDetailOutputSerializer
 class ProjectOutputSerializer(serializers.ModelSerializer):
     class Meta:
         model = Project
-        fields = ["id", "name", "color"] # TODO Add created
+        fields = ["id", "name", "color", "created"]
 
 
 class ProjectDetailOutputSerializer(serializers.ModelSerializer):
