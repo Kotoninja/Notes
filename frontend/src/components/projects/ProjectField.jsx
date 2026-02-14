@@ -16,6 +16,14 @@ function ProjectField(props) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
+  const date = new Date(props.created);
+
+  const formattedDate = date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+  });
+
   const viewTemplate = <>
     <ListItemAvatar sx={{
       display: "flex",
@@ -29,7 +37,7 @@ function ProjectField(props) {
     }}>
       <WorkIcon fontSize="medium" />
     </ListItemAvatar>
-    <ListItemText primary={<Typography noWrap>{props.name}</Typography>} secondary="Jan 9, 2014" />
+    <ListItemText primary={<Typography noWrap>{props.name}</Typography>} secondary={formattedDate} />
   </>
 
 
@@ -66,7 +74,7 @@ function ProjectField(props) {
                 {props.name}
               </Typography>
             }
-            secondary="Jan 9, 2014"
+            secondary={formattedDate}
           />
         </Box>
       </Box>
