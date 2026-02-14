@@ -10,7 +10,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import { TodoBlock } from "../components/TodoBlock";
 import { ProjectCreateDialog } from "../components/projects/ProjectCreateDialog";
-
+import NoteForm from "../components/NoteForm";
 
 // TODO Add created time in projectField.
 // TODO Project note addition system.
@@ -96,7 +96,11 @@ function Projects() {
                 setProjects(editedTaskList);
             }
             );
-    }
+    };
+
+    function addTask(id, title, project_id) {
+        
+    };
 
     return (
         <Layout sx={{ display: "flex" }}>
@@ -113,7 +117,9 @@ function Projects() {
                         {projectsList}
                     </List>
                 </Grid>
-                <Grid sx={{ border: 1, borderRadius: 2, p: 1, ...((loadingNotes || !tasks.length) && { display: "flex", justifyContent: "center", alignItems: "center" }) }} size={9}>
+                <Grid sx={{ border: 1, borderRadius: 2, p: 1, display: "flex", alignItems: "center", flexDirection: "column"}} size={9}>
+                    <Box sx={{width: "100%"}}>
+                    <NoteForm sx={{marginBottom:15}} />
                     {loadingNotes
                         ?
                         <CircularProgress />
@@ -123,8 +129,9 @@ function Projects() {
                                 {notesList}
                             </Box>
                             :
-                            <Typography color="Grey" variant="h4" sx={{ userSelect: "none" }}>No notes...</Typography>
+                            <Typography color="Grey" variant="h4" sx={{ userSelect: "none", textAlign:"center"}}>No notes...</Typography>
                     }
+                    </Box>
                 </Grid>
             </Grid>
         </Layout>

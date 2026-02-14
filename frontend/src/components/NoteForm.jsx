@@ -25,8 +25,7 @@ function NoteForm(props) {
 
     return (
         <>
-            <h2>Home:</h2>
-            <form onSubmit={handleForm}>
+            <form onSubmit={handleForm} style={props.sx}>
                 <FormControl fullWidth={true}>
                     <OutlinedInput id="new-todo-input" placeholder={"What needs to be done?"} value={name} onChange={(e) => setName(e.target.value)} />
                     <Button loading={loading} variant="contained" sx={{ my: 2 }} type="submit">Add</Button>
