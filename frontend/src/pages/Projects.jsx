@@ -98,8 +98,9 @@ function Projects() {
             );
     };
 
-    function addTask(id, title, project_id) {
-        
+    function addTask(name, id) {
+        const newTask = { id: id, key: `todo-${id}`, title: name, completed: false };
+        setTasks([...tasks, newTask]);
     };
 
     return (
@@ -117,20 +118,20 @@ function Projects() {
                         {projectsList}
                     </List>
                 </Grid>
-                <Grid sx={{ border: 1, borderRadius: 2, p: 1, display: "flex", alignItems: "center", flexDirection: "column"}} size={9}>
-                    <Box sx={{width: "100%"}}>
-                    <NoteForm sx={{marginBottom:15}} />
-                    {loadingNotes
-                        ?
-                        <CircularProgress />
-                        :
-                        tasks.length ?
-                            <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-                                {notesList}
-                            </Box>
+                <Grid sx={{ border: 1, borderRadius: 2, p: 1, display: "flex", alignItems: "center", flexDirection: "column" }} size={9}>
+                    <Box sx={{ width: "100%" }}>
+                        <NoteForm addTask={addTask} sx={{ marginBottom: 15 }} body={{ project: detailPk }} />
+                        {loadingNotes
+                            ?
+                            <CircularProgress />
                             :
-                            <Typography color="Grey" variant="h4" sx={{ userSelect: "none", textAlign:"center"}}>No notes...</Typography>
-                    }
+                            tasks.length ?
+                                <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                                    {notesList}
+                                </Box>
+                                :
+                                <Typography color="Grey" variant="h4" sx={{ userSelect: "none", textAlign: "center" }}>No notes...</Typography>
+                        }
                     </Box>
                 </Grid>
             </Grid>

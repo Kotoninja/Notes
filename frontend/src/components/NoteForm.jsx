@@ -14,7 +14,7 @@ function NoteForm(props) {
         event.preventDefault();
         if (name) {
             setLoading(true)
-            api.post("/api/note/create/", { title: name })
+            api.post("/api/note/create/", { title: name, ...props.body })
                 .then(function (response) {
                     props.addTask(name, response?.data?.id);
                 })
