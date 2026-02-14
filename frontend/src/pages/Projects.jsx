@@ -13,7 +13,6 @@ import { ProjectCreateDialog } from "../components/projects/ProjectCreateDialog"
 import NoteForm from "../components/NoteForm";
 
 // TODO Add created time in projectField.
-// TODO Project note addition system.
 
 function Projects() {
     const [projects, setProjects] = useState([]);
@@ -107,7 +106,7 @@ function Projects() {
         <Layout sx={{ display: "flex" }}>
             <title>Projects</title>
             <Grid container spacing={1}>
-                <Grid sx={{ border: 1, borderRadius: 2, p: 1 }} size={3}>
+                <Grid sx={{ borderRight: 2, borderRadius: 2, borderColor: "rgba(189, 189, 189, 0.5)", p: 1 }} size={3}>
                     <Box sx={{ display: "flex", alignItems: "center" }}>
                         <Typography>
                             Projects
@@ -118,7 +117,7 @@ function Projects() {
                         {projectsList}
                     </List>
                 </Grid>
-                <Grid sx={{ border: 1, borderRadius: 2, p: 1, display: "flex", alignItems: "center", flexDirection: "column" }} size={9}>
+                <Grid sx={{ p: 1, display: "flex", alignItems: "center", flexDirection: "column" }} size={9}>
                     <Box sx={{ width: "100%" }}>
                         <NoteForm addTask={addTask} sx={{ marginBottom: 15 }} body={{ project: detailPk }} />
                         {loadingNotes
