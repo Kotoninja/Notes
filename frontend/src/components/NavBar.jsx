@@ -29,6 +29,7 @@ import ListItem from "@mui/material/ListItem";
 import LogoutIcon from '@mui/icons-material/Logout';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 
+// TODO Links to pages in one list
 const NavBar = () => {
     const [open, setOpen] = useState(false);
     const context = useContext(UserContext);
@@ -56,7 +57,7 @@ const NavBar = () => {
         <AppBar
             position="fixed"
             square={true}
-            sx={{ p: 2, display: "block", boxShadow: 0, backgroundColor: "transparent" }}
+            sx={{ pt: 2, display: "block", boxShadow: 0, backgroundColor: "transparent" }}
         >
             <Container>
                 <Toolbar variant="string" sx={{ backgroundColor: "rgba(26, 35, 126, 0.4)", backdropFilter: "blur(12px)", borderRadius: 4, p: 1 }}>
@@ -67,6 +68,9 @@ const NavBar = () => {
                         <Box sx={{ display: { xs: 'none', md: 'flex' }, justifyContent: "center", flex: 1 }}>
                             <Button variant="text" color="white" href="/home">
                                 Home
+                            </Button>
+                            <Button variant="text" color="white" href="/projects">
+                                Projects
                             </Button>
                         </Box>
 
@@ -133,7 +137,7 @@ const NavBar = () => {
                                     </IconButton>
                                 </Box>
                                 <MenuItem><Button href="/home">Home</Button></MenuItem>
-                                <MenuItem><Button href="/faq">FAQ</Button></MenuItem>
+                                <MenuItem><Button href="/projects">Projects</Button></MenuItem>
                                 <Divider sx={{ my: 3 }} />
                             </Box>
                         </Drawer>
