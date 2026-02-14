@@ -9,7 +9,8 @@ from drf_spectacular.utils import extend_schema, extend_schema_view
 from drf_spectacular.utils import OpenApiResponse
 from django.core.cache import cache
 from cache.decorators import validate_cache
-from typing import cast
+from typing import cast, Any
+
 
 @extend_schema_view(
     list=extend_schema(
@@ -54,6 +55,16 @@ class NoteApi(viewsets.ModelViewSet):
     queryset = Note.objects.all()
     serializer_class = NoteSerializer
 
+    def get_queryset(self) -> Any:
+        return Note.objects.filter(user=self.request.user, project=None)
+
+    def get_serializer_class(self, *args, **kwargs):
+        if self.action == "create":
+            return NoteCreateSerializer
+        if self.action == "update":
+            return NoteUpdateSerializer
+        return NoteSerializer
+
     def list(self, request):
         cache_key = "user:{id}:notes:all".format(id=request.user.id)
 
@@ -62,7 +73,7 @@ class NoteApi(viewsets.ModelViewSet):
         if cache_data:
             return Response(data=cache_data["data"], status=cache_data["status"])
         else:
-            notes = Note.objects.filter(user=request.user, project=None)
+            notes = self.get_queryset()
             if notes.exists():
                 serializer = self.get_serializer(notes, many=True)
                 cache.set(
@@ -80,7 +91,7 @@ class NoteApi(viewsets.ModelViewSet):
 
     @validate_cache(key="user:{id}:notes:all")
     def create(self, request):
-        serializer = NoteCreateSerializer(data=request.data)
+        serializer = self.get_serializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             new_note = cast(Note, serializer.save(user=request.user))
             response_data = dict(serializer.data) | {"id": new_note.pk}
@@ -90,7 +101,7 @@ class NoteApi(viewsets.ModelViewSet):
     @validate_cache(key="user:{id}:notes:all")
     def update(self, request, pk):
         note = get_object_or_404(Note, pk=pk, user=request.user)
-        serializer = NoteUpdateSerializer(note, data=request.data)
+        serializer = self.get_serializer(note, data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save(user=request.user)
             return Response(data=serializer.data, status=status.HTTP_200_OK)
