@@ -6,11 +6,9 @@ from rest_framework import permissions
 from rest_framework import status
 from .models import Note
 from drf_spectacular.utils import extend_schema, extend_schema_view
-from drf_spectacular.utils import OpenApiResponse, OpenApiExample
+from drf_spectacular.utils import OpenApiResponse
 from django.core.cache import cache
 from cache.decorators import validate_cache
-from rest_framework_simplejwt.authentication import JWTAuthentication
-from rest_framework.authentication import SessionAuthentication
 from typing import cast
 
 @extend_schema_view(
@@ -64,7 +62,7 @@ class NoteApi(viewsets.ModelViewSet):
         if cache_data:
             return Response(data=cache_data["data"], status=cache_data["status"])
         else:
-            notes = Note.objects.filter(user=request.user)
+            notes = Note.objects.filter(user=request.user, project=None)
             if notes.exists():
                 serializer = self.get_serializer(notes, many=True)
                 cache.set(
@@ -89,7 +87,7 @@ class NoteApi(viewsets.ModelViewSet):
             return Response(data=response_data, status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
-    @validate_cache(key="user:{id }:notes:all")
+    @validate_cache(key="user:{id}:notes:all")
     def update(self, request, pk):
         note = get_object_or_404(Note, pk=pk, user=request.user)
         serializer = NoteUpdateSerializer(note, data=request.data)

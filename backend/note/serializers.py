@@ -19,7 +19,7 @@ class NoteSerializer(serializers.ModelSerializer):
 class NoteCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Note
-        fields = ["title", "description"]
+        fields = ["title", "description", "project"]
 
     def create(self, validated_data):
         note = Note.objects.create(
@@ -31,7 +31,7 @@ class NoteCreateSerializer(serializers.ModelSerializer):
 class NoteUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Note
-        fields = ["title", "description", "completed", "publication_date"]
+        fields = ["title", "description", "completed", "end_date"]
 
     def update(self, instance, validated_data):
         instance.title = validated_data.get("title", instance.title)
@@ -40,3 +40,9 @@ class NoteUpdateSerializer(serializers.ModelSerializer):
         instance.completed = validated_data.get("completed", instance.completed)
         instance.save()
         return instance
+
+
+class NoteDetailOutputSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Note
+        exclude = ["user", "project"]

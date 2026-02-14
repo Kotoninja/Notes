@@ -10,6 +10,7 @@ import api from '../api';
 import { useEffect } from 'react';
 import FilterButton from '../components/FilterButton';
 import UserContext from '../context/UserContext';
+import { TodoBlock } from '../components/TodoBlock';
 
 const FILTER_MAP = {
     All: () => true,
@@ -25,17 +26,7 @@ function Home() {
     const context = useContext(UserContext);
 
     const taskList = tasks.filter(FILTER_MAP[filter]).map((task) =>
-    (<Todo id={task.id}
-        title={task.title}
-        description={task.description}
-        publication_date={task.publication_date}
-        end_date={task.end_date}
-        completed={task.completed}
-        key={task.id}
-        toggleTaskCompleted={toggleTaskCompleted}
-        deleteTask={deleteTask}
-        editTask={editTask}
-        editDate={editDate}
+    (<TodoBlock key={task.id} task={task} tasks={tasks} setTasks={setTasks}
     />));
 
 
@@ -56,68 +47,20 @@ function Home() {
         fetchData();
     }, []);
 
-
-    function toggleTaskCompleted(id, taskTitle, taskCompleted) {
-        api.put(`/api/note/update/${id}/`, {
-            completed: !taskCompleted
-        })
-            .then(() => {
-                const updatedTasks = tasks.map((task) => {
-                    if (id === task.id) {
-                        return { ...task, completed: !taskCompleted };
-                    };
-                    return task;
-                });
-                setTasks(updatedTasks);
-            });
-    };
-
-    function editTask(id, newName) {
-        api.put(`/api/note/update/${id}/`, { title: newName })
-            .then(() => {
-                const editedTaskList = tasks.map((task) => {
-                    if (id === task.id) {
-                        return { ...task, title: newName };
-                    };
-                    return task;
-                });
-                setTasks(editedTaskList);
-            }
-            );
-    };
-
-    function editDate(id, taskTitle, taskEndDate) {
-        api.put(`/api/note/update/${id}/`, { title: taskTitle, end_date: taskEndDate })
-            .then(() => {
-                const editedTaskList = tasks.map((task) => {
-                    if (id === task.id) {
-                        return { ...task, end_date: taskEndDate };
-                    };
-                    return task;
-                });
-                setTasks(editedTaskList);
-            });
-    };
-
     function addTask(name, id) {
         const newTask = { id: id, key: `todo-${id}`, title: name, completed: false };
         setTasks([...tasks, newTask]);
     };
 
-    function deleteTask(id) {
-        api.delete(`api/note/delete/${id}/`)
-            .then(
-                setTasks(tasks.filter((task) => task.id != id))
-            );
-    };
 
     return (
         <Layout>
             <title>Home</title>
+            <h2>Home:</h2>
             {
                 context?.isAuthorized &&
                 <>
-                    <NoteForm addTask={addTask} />
+                    <NoteForm addTask={addTask}/>
                     <Box sx={{ display: "flex", gap: 5, justifyContent: "center" }}>
                         {filterList}
                     </Box>
