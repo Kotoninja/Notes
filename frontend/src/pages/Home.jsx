@@ -56,6 +56,7 @@ function Home() {
     return (
         <Layout>
             <title>Home</title>
+            <h2>Home:</h2>
             {
                 context?.isAuthorized &&
                 <>
