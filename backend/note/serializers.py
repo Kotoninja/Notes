@@ -19,7 +19,7 @@ class NoteSerializer(serializers.ModelSerializer):
 class NoteCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Note
-        fields = ["title", "description"]
+        fields = ["title", "description", "project"]
 
     def create(self, validated_data):
         note = Note.objects.create(
