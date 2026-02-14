@@ -7,17 +7,6 @@ from rest_framework.response import Response
 from rest_framework import status
 
 
-@extend_schema(
-    summary="Return a list of all usernames in the system.",
-)
-class UserAPIList(generics.ListAPIView):
-    queryset = User.objects.all()
-    serializer_class = UserSerializer # TODO Delete this class
-    permission_classes = [
-        IsAuthenticated,
-    ]
-
-
 @extend_schema_view(
     list=extend_schema(summary="Information about the authorized user"),
     create=extend_schema(summary="Register a user"),
