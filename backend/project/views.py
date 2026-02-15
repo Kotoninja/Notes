@@ -1,21 +1,20 @@
-from rest_framework.response import Response
-from rest_framework import status
-from rest_framework import viewsets
-from project.models import Project
-from rest_framework.permissions import IsAuthenticated
-from django.shortcuts import get_object_or_404
 from typing import Any, cast
+
+from cache import keys
+from django.core.cache import cache
+from django.shortcuts import get_object_or_404
+from drf_spectacular.utils import OpenApiResponse, extend_schema, extend_schema_view
+from rest_framework import status, viewsets
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework.serializers import Serializer
+
+from project.models import Project
 from project.serializers import (
     ProjectDetailOutputSerializer,
     ProjectInputSerializer,
     ProjectOutputSerializer,
 )
-from django.core.cache import cache
-from cache import keys
-from drf_spectacular.utils import extend_schema, extend_schema_view
-from drf_spectacular.utils import OpenApiResponse
-from rest_framework.serializers import Serializer
-from django.db.models import QuerySet
 
 
 @extend_schema_view(
@@ -132,7 +131,7 @@ class ProjectAPI(viewsets.ModelViewSet):
     def create(self, request):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
-            new_project = cast(Project, serializer.save(user=request.user))
+            new_project = cast(Project, self.perform_create(serializer=serializer))
             response_data = dict(serializer.data) | {"id": new_project.pk}
             return Response(data=response_data, status=status.HTTP_201_CREATED)
         return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -141,10 +140,10 @@ class ProjectAPI(viewsets.ModelViewSet):
         project = self.get_object()
         serializer = self.get_serializer(project, data=request.data, partial=True)
         if serializer.is_valid():
-            serializer.save()
+            self.perform_update(serializer=serializer)
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, pk):
-        self.get_object().delete()
+        self.perform_destroy(self.get_object())
         return Response(status=status.HTTP_204_NO_CONTENT)
