@@ -4,7 +4,7 @@ from rest_framework import viewsets
 from project.models import Project
 from rest_framework.permissions import IsAuthenticated
 from django.shortcuts import get_object_or_404
-from typing import cast
+from typing import Any, cast
 from project.serializers import (
     ProjectDetailOutputSerializer,
     ProjectInputSerializer,
@@ -14,6 +14,8 @@ from django.core.cache import cache
 from cache import keys
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from drf_spectacular.utils import OpenApiResponse
+from rest_framework.serializers import Serializer
+from django.db.models import QuerySet
 
 
 @extend_schema_view(
@@ -56,9 +58,43 @@ from drf_spectacular.utils import OpenApiResponse
     ),
 )
 class ProjectAPI(viewsets.ModelViewSet):
-    queryset = Project.objects.all()
+    queryset = Project.objects
     permission_classes = [IsAuthenticated]
     serializer_class = ProjectInputSerializer
+
+    def get_object(self) -> Project:  # type: ignore
+        return get_object_or_404(
+            self.queryset,
+            pk=self.kwargs.get("pk"),
+            user=self.request.user,
+        )
+
+    def filter_queryset(self, queryset) -> Project:
+        return get_object_or_404(
+            queryset.prefetch_related("notes"),
+            pk=self.kwargs.get("pk"),
+            user=self.request.user,
+        )
+
+    def get_queryset(self) -> Any:
+        return self.queryset.filter(user=self.request.user)
+
+    def get_serializer_class(self) -> type[Serializer]:  # type: ignore
+        if self.action == "list":
+            return ProjectOutputSerializer
+        if self.action == "retrieve":
+            return ProjectDetailOutputSerializer
+        return ProjectInputSerializer
+
+    def perform_create(self, serializer: ProjectInputSerializer):
+        return serializer.save(user=self.request.user)
+
+    def perform_update(self, serializer: ProjectInputSerializer):
+        instance = serializer.save()
+        return instance
+
+    def perform_destroy(self, instance: Project):
+        instance.delete()
 
     def list(self, request):
         cache_key = keys.PROJECT_ALL.format(id=request.user.pk)
@@ -66,12 +102,9 @@ class ProjectAPI(viewsets.ModelViewSet):
         cache_data = cache.get(key=cache_key)
 
         if cache_data:
-            # print("Cached")
             return Response(data=cache_data["data"], status=cache_data["status"])
         else:
-            serializer = ProjectOutputSerializer(
-                self.queryset.filter(user=request.user), many=True
-            )
+            serializer = self.get_serializer(self.get_queryset(), many=True)
             cache.set(
                 key=cache_key,
                 value={"data": serializer.data, "status": status.HTTP_200_OK},
@@ -85,13 +118,10 @@ class ProjectAPI(viewsets.ModelViewSet):
         cache_data = cache.get(key=cache_key)
 
         if cache_data:
-            # print("Cached")
             return Response(data=cache_data["data"], status=cache_data["status"])
         else:
-            project = get_object_or_404(
-                self.queryset.prefetch_related("notes"), pk=pk, user=request.user
-            )
-            serializer = ProjectDetailOutputSerializer(project)
+            project = self.filter_queryset(self.queryset)
+            serializer = self.get_serializer(project)
             cache.set(
                 key=cache_key,
                 value={"data": serializer.data, "status": status.HTTP_200_OK},
@@ -100,7 +130,7 @@ class ProjectAPI(viewsets.ModelViewSet):
             return Response(data=serializer.data, status=status.HTTP_200_OK)
 
     def create(self, request):
-        serializer = ProjectInputSerializer(data=request.data)
+        serializer = self.get_serializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             new_project = cast(Project, serializer.save(user=request.user))
             response_data = dict(serializer.data) | {"id": new_project.pk}
@@ -108,15 +138,13 @@ class ProjectAPI(viewsets.ModelViewSet):
         return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def partial_update(self, request, pk):
-        project = get_object_or_404(Project, pk=pk)
-        serializer = ProjectInputSerializer(project, data=request.data, partial=True)
+        project = self.get_object()
+        serializer = self.get_serializer(project, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, pk):
-        get_object_or_404(
-            self.queryset.prefetch_related("notes"), pk=pk, user=request.user
-        ).delete()
+        self.get_object().delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
