@@ -1,15 +1,15 @@
-from django.shortcuts import get_object_or_404
-from rest_framework import viewsets
-from .serializers import NoteSerializer, NoteCreateSerializer, NoteUpdateSerializer
-from rest_framework.response import Response
-from rest_framework import permissions
-from rest_framework import status
-from .models import Note
-from drf_spectacular.utils import extend_schema, extend_schema_view
-from drf_spectacular.utils import OpenApiResponse
-from django.core.cache import cache
+from typing import Any, cast
+
 from cache.decorators import validate_cache
-from typing import cast
+from django.core.cache import cache
+from django.shortcuts import get_object_or_404
+from drf_spectacular.utils import OpenApiResponse, extend_schema, extend_schema_view
+from rest_framework import permissions, status, viewsets
+from rest_framework.response import Response
+
+from .models import Note
+from .serializers import NoteCreateSerializer, NoteSerializer, NoteUpdateSerializer
+
 
 @extend_schema_view(
     list=extend_schema(
@@ -54,6 +54,26 @@ class NoteApi(viewsets.ModelViewSet):
     queryset = Note.objects.all()
     serializer_class = NoteSerializer
 
+    def get_queryset(self) -> Any:
+        return Note.objects.filter(user=self.request.user, project=None)
+
+    def get_serializer_class(self, *args, **kwargs) -> Any:
+        if self.action == "create":
+            return NoteCreateSerializer
+        if self.action == "update":
+            return NoteUpdateSerializer
+        return NoteSerializer
+
+    def perform_create(self, serializer: NoteCreateSerializer):
+        return serializer.save(user=self.request.user)
+
+    def perform_update(self, serializer: NoteUpdateSerializer):
+        instance = serializer.save()
+        return instance
+
+    def perform_destroy(self, instance: Note):
+        instance.delete()
+
     def list(self, request):
         cache_key = "user:{id}:notes:all".format(id=request.user.id)
 
@@ -62,7 +82,7 @@ class NoteApi(viewsets.ModelViewSet):
         if cache_data:
             return Response(data=cache_data["data"], status=cache_data["status"])
         else:
-            notes = Note.objects.filter(user=request.user, project=None)
+            notes = self.get_queryset()
             if notes.exists():
                 serializer = self.get_serializer(notes, many=True)
                 cache.set(
@@ -80,9 +100,9 @@ class NoteApi(viewsets.ModelViewSet):
 
     @validate_cache(key="user:{id}:notes:all")
     def create(self, request):
-        serializer = NoteCreateSerializer(data=request.data)
+        serializer = self.get_serializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
-            new_note = cast(Note, serializer.save(user=request.user))
+            new_note = cast(Note, self.perform_create(serializer))
             response_data = dict(serializer.data) | {"id": new_note.pk}
             return Response(data=response_data, status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -90,13 +110,13 @@ class NoteApi(viewsets.ModelViewSet):
     @validate_cache(key="user:{id}:notes:all")
     def update(self, request, pk):
         note = get_object_or_404(Note, pk=pk, user=request.user)
-        serializer = NoteUpdateSerializer(note, data=request.data)
+        serializer = self.get_serializer(note, data=request.data)
         if serializer.is_valid(raise_exception=True):
-            serializer.save(user=request.user)
+            self.perform_update(serializer)
             return Response(data=serializer.data, status=status.HTTP_200_OK)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
     @validate_cache(key="user:{id}:notes:all")
     def destroy(self, request, pk):
-        get_object_or_404(Note, pk=pk, user=request.user).delete()
+        self.perform_destroy(get_object_or_404(Note, pk=pk, user=request.user))
         return Response(status=status.HTTP_200_OK)

@@ -1,10 +1,10 @@
-from django.db import models
-from django.contrib.auth.models import User
-from django.dispatch import receiver
-from django.db.models.signals import post_save, post_delete
-from django.core.cache import cache
-from project.models import Project
 from cache.keys import PROJECT_DETAIL
+from django.contrib.auth.models import User
+from django.core.cache import cache
+from django.db import models
+from django.db.models.signals import post_delete, post_save
+from django.dispatch import receiver
+from project.models import Project
 
 
 class Note(models.Model):
