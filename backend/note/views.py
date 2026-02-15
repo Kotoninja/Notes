@@ -1,15 +1,14 @@
-from django.shortcuts import get_object_or_404
-from rest_framework import viewsets
-from .serializers import NoteSerializer, NoteCreateSerializer, NoteUpdateSerializer
-from rest_framework.response import Response
-from rest_framework import permissions
-from rest_framework import status
-from .models import Note
-from drf_spectacular.utils import extend_schema, extend_schema_view
-from drf_spectacular.utils import OpenApiResponse
-from django.core.cache import cache
+from typing import Any, cast
+
 from cache.decorators import validate_cache
-from typing import cast, Any
+from django.core.cache import cache
+from django.shortcuts import get_object_or_404
+from drf_spectacular.utils import OpenApiResponse, extend_schema, extend_schema_view
+from rest_framework import permissions, status, viewsets
+from rest_framework.response import Response
+
+from .models import Note
+from .serializers import NoteCreateSerializer, NoteSerializer, NoteUpdateSerializer
 
 
 @extend_schema_view(

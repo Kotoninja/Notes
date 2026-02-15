@@ -1,11 +1,12 @@
-from rest_framework import generics, viewsets
-from django.contrib.auth.models import User
-from .serializers import UserSerializer
-from rest_framework.permissions import IsAuthenticated, AllowAny
-from drf_spectacular.utils import extend_schema, extend_schema_view
-from rest_framework.response import Response
-from rest_framework import status
 from typing import Any
+
+from django.contrib.auth.models import User
+from drf_spectacular.utils import extend_schema, extend_schema_view
+from rest_framework import status, viewsets
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+
+from .serializers import UserSerializer
 
 
 @extend_schema_view(
