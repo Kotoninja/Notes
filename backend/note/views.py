@@ -58,12 +58,22 @@ class NoteApi(viewsets.ModelViewSet):
     def get_queryset(self) -> Any:
         return Note.objects.filter(user=self.request.user, project=None)
 
-    def get_serializer_class(self, *args, **kwargs):
+    def get_serializer_class(self, *args, **kwargs) -> Any:
         if self.action == "create":
             return NoteCreateSerializer
         if self.action == "update":
             return NoteUpdateSerializer
         return NoteSerializer
+
+    def perform_create(self, serializer: NoteCreateSerializer):
+        return serializer.save(user=self.request.user)
+
+    def perform_update(self, serializer: NoteUpdateSerializer):
+        instance = serializer.save()
+        return instance
+
+    def perform_destroy(self, instance: Note):
+        instance.delete()
 
     def list(self, request):
         cache_key = "user:{id}:notes:all".format(id=request.user.id)
@@ -93,7 +103,7 @@ class NoteApi(viewsets.ModelViewSet):
     def create(self, request):
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
-            new_note = cast(Note, serializer.save(user=request.user))
+            new_note = cast(Note, self.perform_create(serializer))
             response_data = dict(serializer.data) | {"id": new_note.pk}
             return Response(data=response_data, status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -103,11 +113,11 @@ class NoteApi(viewsets.ModelViewSet):
         note = get_object_or_404(Note, pk=pk, user=request.user)
         serializer = self.get_serializer(note, data=request.data)
         if serializer.is_valid(raise_exception=True):
-            serializer.save(user=request.user)
+            self.perform_update(serializer)
             return Response(data=serializer.data, status=status.HTTP_200_OK)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
     @validate_cache(key="user:{id}:notes:all")
     def destroy(self, request, pk):
-        get_object_or_404(Note, pk=pk, user=request.user).delete()
+        self.perform_destroy(get_object_or_404(Note, pk=pk, user=request.user))
         return Response(status=status.HTTP_200_OK)
