@@ -5,6 +5,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework.response import Response
 from rest_framework import status
+from typing import Any
 
 
 @extend_schema_view(
@@ -15,9 +16,15 @@ class UserApi(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     permission_classes = [AllowAny]
 
-    def list(self, request):
+    def get_object(self) -> Any:
+        return User.objects.get(pk=self.request.user.pk)
+
+    def perform_create(self, serializer: UserSerializer):
+        return serializer.save()
+
+    def retrieve(self, request):
         if request.user.is_authenticated:
-            user = User.objects.get(pk=request.user.id)
+            user = self.get_object()
             serializer = self.get_serializer(user)
             return Response(serializer.data)
         return Response(
@@ -28,6 +35,6 @@ class UserApi(viewsets.ModelViewSet):
     def post(self, request):
         serializer = self.get_serializer(request.data)
         if serializer.is_valid():
-            serializer.save()
+            self.perform_create(serializer=serializer)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
