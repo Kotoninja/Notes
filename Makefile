@@ -18,3 +18,5 @@ kill: ## Kill postgres port
 	sudo kill -9 $$(sudo lsof -t -i:5432)
 f-bash: ## Open bash in frontend container
 	docker compose exec -it frontend sh
+test:
+	docker compose exec -it backend python manage.py test
