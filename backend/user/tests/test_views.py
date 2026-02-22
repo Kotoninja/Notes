@@ -2,11 +2,14 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
+from rest_framework_simplejwt.tokens import RefreshToken
 
 USERNAME: str = "Bob"
 PASSWORD: str = "123"
 EMAIL: str = "Bob@email.ru"
 REGISTRATION_URL: str = reverse("user:registration")
+TOKEN_OBTAIN_PAIR_URL: str = reverse("token_obtain_pair")
+USER_CONTEXT_URL: str = reverse("user:context")
 
 
 class RegistrationTestCase(APITestCase):
@@ -15,7 +18,7 @@ class RegistrationTestCase(APITestCase):
             REGISTRATION_URL,
             {"username": USERNAME, "password": PASSWORD, "email": EMAIL},
         )
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.status_code, statuus.HTTP_201_CREATED)
         self.assertEqual(User.objects.count(), 1)
 
     def test_registration_with_wrong_email(self):
@@ -51,7 +54,7 @@ class RegistrationTestCase(APITestCase):
         self.assertEqual(response.data, {"email": ["This field is required."]})
 
 
-class RegisteringWhenAnotherUserExists(APITestCase):
+class RegisteringWhenAnotherUserExistsTestCase(APITestCase):
     @classmethod
     def setUpTestData(cls):
         User.objects.create_user(username=USERNAME, password=PASSWORD, email=EMAIL)
@@ -85,3 +88,31 @@ class RegisteringWhenAnotherUserExists(APITestCase):
         )
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(User.objects.count(), 2)
+
+
+class AuthUserTestCase(APITestCase):
+    @classmethod
+    def setUpTestData(cls):
+        User.objects.create_user(username=USERNAME, password=PASSWORD, email=EMAIL)
+
+    def test_login_request(self):
+        response = self.client.post(
+            path=TOKEN_OBTAIN_PAIR_URL,
+            data={"username": USERNAME, "password": PASSWORD},
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertContains(response, "refresh")
+        self.assertContains(response, "access")
+
+    def test_get_user_context_no_auth(self):
+        response = self.client.get(path=USER_CONTEXT_URL)
+        self.assertEqual(
+            response.status_code, status.HTTP_401_UNAUTHORIZED, response.content
+        )
+
+    def test_get_user_context(self):
+        user = User.objects.get(id=1)
+        refresh = RefreshToken.for_user(user)
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {refresh.access_token}")
+        response = self.client.get(path=USER_CONTEXT_URL)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
