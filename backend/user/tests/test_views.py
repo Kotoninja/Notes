@@ -4,6 +4,8 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 from rest_framework_simplejwt.tokens import RefreshToken
 
+from user.models import Additional
+
 USERNAME: str = "Bob"
 PASSWORD: str = "123"
 EMAIL: str = "Bob@email.ru"
@@ -18,8 +20,9 @@ class RegistrationTestCase(APITestCase):
             REGISTRATION_URL,
             {"username": USERNAME, "password": PASSWORD, "email": EMAIL},
         )
-        self.assertEqual(response.status_code, statuus.HTTP_201_CREATED)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(User.objects.count(), 1)
+        self.assertEqual(Additional.objects.count(), 1)
 
     def test_registration_with_wrong_email(self):
         response = self.client.post(
