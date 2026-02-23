@@ -20,6 +20,7 @@ class NoteCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Note
         fields = ["title", "description", "project"]
+        extra_kwargs = {"title": {"required": True}}
 
     def create(self, validated_data):
         note = Note.objects.create(
