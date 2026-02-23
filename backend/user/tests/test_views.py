@@ -96,7 +96,7 @@ class RegisteringWhenAnotherUserExistsTestCase(APITestCase):
 class AuthUserTestCase(APITestCase):
     @classmethod
     def setUpTestData(cls):
-        User.objects.create_user(username=USERNAME, password=PASSWORD, email=EMAIL)
+        cls.user = User.objects.create_user(username=USERNAME, password=PASSWORD, email=EMAIL)
 
     def test_login_request(self):
         response = self.client.post(
@@ -114,8 +114,7 @@ class AuthUserTestCase(APITestCase):
         )
 
     def test_get_user_context(self):
-        user = User.objects.get(id=1)
-        refresh = RefreshToken.for_user(user)
+        refresh = RefreshToken.for_user(self.user)
         self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {refresh.access_token}")
         response = self.client.get(path=USER_CONTEXT_URL)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
