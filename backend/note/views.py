@@ -11,7 +11,7 @@ from .models import Note
 from .serializers import NoteCreateSerializer, NoteSerializer, NoteUpdateSerializer
 
 
-@extend_schema_view(
+@extend_schema_view( # TODO Update API (project "null")
     list=extend_schema(
         summary="All user notes.",
         responses={
@@ -19,7 +19,7 @@ from .serializers import NoteCreateSerializer, NoteSerializer, NoteUpdateSeriali
             status.HTTP_204_NO_CONTENT: OpenApiResponse(response={}),
         },
     ),
-    create=extend_schema(
+    create=extend_schema(  # FIXME description="Please specify <b>project</b> id or delete project field",
         summary="Create a note",
         request=NoteCreateSerializer,
         responses={
