@@ -1,9 +1,9 @@
 from django.contrib.auth.models import User
+from django.db import models
 from django.test import TestCase
+from project.models import Project
 
 from note.models import Note
-from project.models import Project
-from django.db import models
 
 
 class AdditionalModelTestCase(TestCase):
