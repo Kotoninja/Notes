@@ -24,14 +24,14 @@ class NoteNoAuthTestCase(APITestCase):
     @classmethod
     def setUpTestData(cls):
         user = User.objects.create_user(username="bob", password="123")
-        Note.objects.create(user=user, title="Test title")
+        cls.note = Note.objects.create(user=user, title="Test title")
 
     def test_note_methods(self):
         endpoints = [
             ("get", NOTE_ALL_URL, {}),
             ("post", NOTE_CREATE_URL, {"title": "TEST"}),
-            ("put", NOTE_UPDATE_URL(), {"title": "hello"}),
-            ("delete", NOTE_DELETE_URL(), {}),
+            ("put", NOTE_UPDATE_URL(self.note.pk), {"title": "hello"}),
+            ("delete", NOTE_DELETE_URL(self.note.pk), {}),
         ]
 
         for method, endpoint, data in endpoints:
@@ -45,7 +45,7 @@ class NoteAuthTestCase(APITestCase):
     @classmethod
     def setUpTestData(cls):
         cls.user = User.objects.create_user(username="bob", password="123")
-        Note.objects.create(user=cls.user, title="Test title")
+        cls.note = Note.objects.create(user=cls.user, title="Test title")
 
     def setUp(self) -> None:
         self.client = APIClient()
@@ -56,8 +56,8 @@ class NoteAuthTestCase(APITestCase):
         endpoints = [
             ("get", NOTE_ALL_URL, {}),
             ("post", NOTE_CREATE_URL, {"title": "TEST"}),
-            ("put", NOTE_UPDATE_URL(), {"title": "hello"}),
-            ("delete", NOTE_DELETE_URL(), {}),
+            ("put", NOTE_UPDATE_URL(self.note.pk), {"title": "hello"}),
+            ("delete", NOTE_DELETE_URL(self.note.pk), {}),
         ]
 
         for method, endpoint, data in endpoints:
