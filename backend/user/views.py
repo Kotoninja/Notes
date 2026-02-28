@@ -33,8 +33,8 @@ class UserApi(viewsets.ModelViewSet):
             status=status.HTTP_401_UNAUTHORIZED,
         )
 
-    def post(self, request):
-        serializer = self.get_serializer(request.data)
+    def create(self, request):
+        serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
             self.perform_create(serializer=serializer)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
