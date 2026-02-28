@@ -1,9 +1,6 @@
 [report]
 omit = [
-    "config/wsgi.py",
-    "config/django/production.py",
-    "config/asgi.py",
+    "config/*",
     "manage.py",
-    "config/django/local.py"
 ]
 
