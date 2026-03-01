@@ -15,7 +15,7 @@ pillow==12.1.1
 psycopg==3.3.2
 PyJWT==2.11.0
 PyYAML==6.0.3
-redis==7.1.0
+redis==7.2.1
 referencing==0.37.0
 rpds-py==0.30.0
 sqlparse==0.5.5
