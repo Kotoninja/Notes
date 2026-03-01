@@ -5,5 +5,5 @@ app_name = "user"
 
 urlpatterns = [
     path("registration/", view=views.UserApi.as_view({"post":"create"}), name="registration"),
-    path("context/", view=views.UserApi.as_view({"get":"list"}), name="registration"),
+    path("context/", view=views.UserApi.as_view({"get":"retrieve"}), name="context"),
 ]
