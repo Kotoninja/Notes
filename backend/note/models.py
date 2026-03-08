@@ -12,9 +12,7 @@ class Note(models.Model):
     project = models.ForeignKey(
         Project, on_delete=models.SET_NULL, related_name="notes", null=True, blank=True
     )
-    title = models.CharField(
-        max_length=200, blank=True
-    )  # BUG When creating a title, add text such as "untitled".
+    title = models.CharField(max_length=200, null=True)
     description = models.CharField(max_length=150, blank=True)
     publication_date = models.DateTimeField(auto_now_add=True)
     end_date = models.DateTimeField(blank=True, null=True)
@@ -22,9 +20,7 @@ class Note(models.Model):
 
 
 @receiver(signal=[post_delete, post_save], sender=Note)
-def note_cache_invalidation(
-    sender, instance, **kwargs
-):  # BUG When adding a note in the admin panel, the project cache is not updated.
+def note_cache_invalidation(sender, instance, **kwargs):
     cache.delete(key="user:{id}:notes:all".format(id=instance.user.id))
     if instance.project:
         cache.delete(PROJECT_DETAIL.format(id=instance.user.id, pk=instance.project.pk))
