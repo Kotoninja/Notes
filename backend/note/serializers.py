@@ -1,4 +1,6 @@
+from django.utils import timezone
 from rest_framework import serializers
+
 from .models import Note
 
 
@@ -6,6 +8,7 @@ class NoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Note
         exclude = ["user"]
+
 
 class NoteCreateSerializer(serializers.ModelSerializer):
     class Meta:
@@ -25,11 +28,18 @@ class NoteUpdateSerializer(serializers.ModelSerializer):
         model = Note
         fields = ["title", "description", "completed", "end_date"]
 
+    def validate_end_date(self, value):
+        if value is not None and value <= timezone.now():
+            raise serializers.ValidationError(
+                "The end date cannot be less than the current date."
+            )
+
     def update(self, instance, validated_data):
         instance.title = validated_data.get("title", instance.title)
         instance.description = validated_data.get("description", instance.description)
         instance.end_date = validated_data.get("end_date", instance.end_date)
         instance.completed = validated_data.get("completed", instance.completed)
+        instance.clean()
         instance.save()
         return instance
 

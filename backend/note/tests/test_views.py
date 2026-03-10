@@ -1,7 +1,9 @@
+import datetime
 import json
 
 from django.contrib.auth.models import User
 from django.urls import reverse
+from django.utils import timezone
 from rest_framework import status
 from rest_framework.test import APIClient, APITestCase
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -137,6 +139,20 @@ class NoteUpdateAPIBadRequestTestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
         self.assertIn(
             "Datetime has wrong format.", json.loads(response.content)["end_date"][0]
+        )
+
+    def test_with_past_end_date(self):
+        response = self.client.put(
+            path=NOTE_UPDATE_URL(self.user_note.pk),
+            data={
+                "title": "test",
+                "end_date": timezone.now() - datetime.timedelta(days=30),
+            },
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(
+            response.data["end_date"],
+            ["The end date cannot be less than the current date."],
         )
 
 
